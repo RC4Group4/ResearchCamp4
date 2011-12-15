@@ -1,0 +1,14 @@
+<package>
+  <description brief="youbot_default_env_config">
+
+     youbot_default_env_config
+
+  </description>
+  <author>fred</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/youbot_default_env_config</url>
+
+</package>
+
+
