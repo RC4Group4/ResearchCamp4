@@ -1,0 +1,9 @@
+<stack>
+  <description brief="youbot_robots">youbot_robots</description>
+  <author>Maintained by fred</author>
+  <license>BSD</license>  
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/youbot_robots</url>
+  <depend stack="ros" />
+
+</stack>

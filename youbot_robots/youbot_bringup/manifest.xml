@@ -1,0 +1,18 @@
+<package>
+  <description brief="youbot_bringup">
+
+     youbot_bringup
+
+  </description>
+  <author>fred</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/youbot_bringup</url>
+
+  <depend package="youbot_oodl"/>
+  <depend package="youbot_navigation_common"/>
+  <depend package="youbot_teleop"/>
+
+</package>
+
+
