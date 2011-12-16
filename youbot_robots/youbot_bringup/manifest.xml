@@ -12,6 +12,7 @@
   <depend package="youbot_oodl"/>
   <depend package="youbot_navigation_common"/>
   <depend package="youbot_teleop"/>
+  <depend package="youbot_description"/>
 
 </package>
 
