@@ -20,6 +20,7 @@
 using namespace std;
 
 bool deadman_pressed = false;
+bool deadman_pressed_prev = false;
 bool run_pressed = false;
 double linear_x_speed = 0;
 double linear_y_speed = 0;
@@ -32,6 +33,7 @@ double angular_factor = 0;
 
 void joy_cmds(const sensor_msgs::Joy::ConstPtr& command)
 {
+	deadman_pressed_prev = 	deadman_pressed;
 	deadman_pressed = (bool)command->buttons[BUTTON_DEADMAN];
 	run_pressed = (bool)command->buttons[BUTTON_RUN];
 
@@ -79,6 +81,19 @@ int main(int argc, char **argv)
 
     		pub_base.publish(base_cmd);
     	}
+
+	else 
+	{
+		if(deadman_pressed_prev)
+		{
+			base_cmd.linear.x = 0;
+			base_cmd.linear.y = 0;
+			base_cmd.angular.z = 0;
+
+			pub_base.publish(base_cmd);
+		}
+		
+	}
 
     	ros::spinOnce();
     	loop_rate.sleep();
