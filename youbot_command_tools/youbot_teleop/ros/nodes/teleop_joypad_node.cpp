@@ -12,7 +12,7 @@
 #define MAX_JOYPAD			1.0
 
 #define BUTTON_DEADMAN			5
-#define BUTTON_RUN			7
+#define BUTTON_RUN				7
 #define AXES_LINEAR_X_SPEED		1
 #define AXES_LINEAR_Y_SPEED		0
 #define AXES_ANGULAR_SPEED		2
@@ -20,6 +20,7 @@
 using namespace std;
 
 bool deadman_pressed = false;
+bool deadman_pressed_prev = false;
 bool run_pressed = false;
 double linear_x_speed = 0;
 double linear_y_speed = 0;
@@ -32,6 +33,7 @@ double angular_factor = 0;
 
 void joy_cmds(const sensor_msgs::Joy::ConstPtr& command)
 {
+	deadman_pressed_prev = deadman_pressed;
 	deadman_pressed = (bool)command->buttons[BUTTON_DEADMAN];
 	run_pressed = (bool)command->buttons[BUTTON_RUN];
 
@@ -61,7 +63,7 @@ int main(int argc, char **argv)
     base_cmd.linear.x = base_cmd.linear.y = base_cmd.linear.z = 0.0;
     base_cmd.angular.x = base_cmd.angular.y = base_cmd.angular.z = 0.0;
 
-    ros::Rate loop_rate(20);
+    ros::Rate loop_rate(30);
     while(ros::ok())
     {
     	if(deadman_pressed)
@@ -79,6 +81,18 @@ int main(int argc, char **argv)
 
     		pub_base.publish(base_cmd);
     	}
+
+		else
+		{
+			if(deadman_pressed_prev)
+			{
+				base_cmd.linear.x = 0;
+				base_cmd.linear.y = 0;
+				base_cmd.angular.z = 0;
+
+				pub_base.publish(base_cmd);
+			}
+		}
 
     	ros::spinOnce();
     	loop_rate.sleep();
