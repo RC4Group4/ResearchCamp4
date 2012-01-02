@@ -78,7 +78,7 @@ boost::mutex mutexExtractedObjects;
 int max_augment = 0;
 pcl::PointCloud<pcl::PointXYZRGB> augmentPointCloud;
 
-#define SAMPLING_DISTANCE 0.025
+#define SAMPLING_DISTANCE 0.00025
 
 #define SPHERICAL_DISTANCE 2.5f
 
@@ -94,8 +94,8 @@ pcl::PointCloud<pcl::PointXYZRGB> augmentPointCloud;
 #define KINECT_ANGLE_INIT -30
 #define KINECT_ANGLE_STEP 10
 
-#define MIN_POINTS_FOR_BEST_OBJECT_CANDIDATE 100
-#define MIN_DIST_TO_GRASP 1.0
+#define MIN_POINTS_FOR_BEST_OBJECT_CANDIDATE 5
+#define MIN_DIST_TO_GRASP 0.0
 
 #define OPENNI 0
 
@@ -105,7 +105,7 @@ ros::ServiceClient *dynamicReconfigureClientKinectTilt;
 
 std::string nodeName = "objectCandidateExtraction3D_node";
 std::string toFrame = std::string("/base_link");
-std::string kinectTopicToSubscribe = std::string("/cam3d/rgb/points");
+std::string kinectTopicToSubscribe = std::string("/camera/rgb/points");
 //std::string kinectTopicToSubscribe = std::string("/kinect/rgb/points2");
 
 std::vector<sensor_msgs::PointCloud2> finalClusteredObjectsMsg;
@@ -295,7 +295,7 @@ void objectCandidateExtractionCallback(const sensor_msgs::PointCloud2::ConstPtr&
 		augmentPointCloud = toolBox.filterDistance(augmentPointCloud, Z_DISTANCE_MIN, Z_DISTANCE_MAX, "z");
 
 		//toolBox.subsampling(augmentPointCloud, 0.004); //0.01
-		toolBox.subsampling(augmentPointCloud, 0.008); //0.01
+		toolBox.subsampling(augmentPointCloud, 0.006); //0.01
 
 		augmentPointCloudCopy = augmentPointCloud;
 		

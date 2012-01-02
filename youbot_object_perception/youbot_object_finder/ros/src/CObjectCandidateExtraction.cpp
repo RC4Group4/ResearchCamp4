@@ -7,7 +7,7 @@
 
 #include "CObjectCandidateExtraction.h"
 
-#define THRESHOLD_POINT_ABOVE_LOWER_PLANE 0.03f
+#define THRESHOLD_POINT_ABOVE_LOWER_PLANE 0.005f
 //0.005f worked fine and stabile but it can no extract cell phone height like objects
 // 0.003f is fine for cell phone like but confidence is lower!!!
 //This is a major stability factor for the extraction
@@ -25,7 +25,7 @@
 //worked fine 0.12f
 //0.1 worked fine without object-height threshold
 
-#define MIN_OBJECT_POINT_SIZE 70
+#define MIN_OBJECT_POINT_SIZE 5
 
 CObjectCandidateExtraction::CObjectCandidateExtraction() {
 	this->nodeName = "---/CObjectCandidateExtraction";
