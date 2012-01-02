@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
 <launch>
+	<rosparam command="load" ns="/script_server/base" file="$(find youbot_default_env_config)/$(env ROBOT_ENV)/navigation_goals.yaml"/>	
+
 	<arg name="map" default="$(find youbot_default_env_config)/$(env ROBOT_ENV)/map.yaml" />
 
 	<!--- Run map_server -->
