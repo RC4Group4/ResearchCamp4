@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<launch>
+	<!-- base components -->
+	<include file="$(find youbot_bringup)/robots/youbot.launch" />
+
+	<!-- manipulation -->	
+	<rosparam file="$(find youbot_grri_demo)/london/config/arm_configurations.yaml" command="load" ns="arm_configurations" />
+	
+	<include file="$(find youbot_arm_navigation)/ros/launch/planning_environment.launch" />
+	<include file="$(find youbot_arm_navigation)/ros/launch/constraint_aware_kinematics.launch" />
+	<include file="$(find youbot_joint_trajectory_action)/ros/launch/youbot_joint_trajectory_action.launch" />
+
+	<!-- navigation -->
+	<include file="$(find youbot_2dnav)/ros/launch/youbot_2dnav.launch" />
+
+	<!-- perception -->
+		<!-- kinect -->
+		<!-- object finder -->
+</launch>
