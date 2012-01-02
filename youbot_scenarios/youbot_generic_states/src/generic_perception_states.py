@@ -7,7 +7,7 @@ import smach_ros
 
 class detect_object(smach.State):
 
-    def __init__(self, pose = ""):
+    def __init__(self):
         smach.State.__init__(
             self,
             outcomes=['succeeded', 'failed'])

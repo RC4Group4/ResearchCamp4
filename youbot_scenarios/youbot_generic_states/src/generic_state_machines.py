@@ -22,4 +22,3 @@ class sm_grasp_object(smach.StateMachine):
             smach.StateMachine.add('GRASP_OBJECT', grasp_object(),
                 transitions={'succeeded':'object_grasped', 
                             'failed':'failed'})
-

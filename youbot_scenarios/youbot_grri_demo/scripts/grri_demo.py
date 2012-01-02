@@ -31,10 +31,9 @@ def main():
                          'failed':'ANNOUNCE_FAILURE'})
         
         smach.StateMachine.add('SELECT_POSE_TO_APPROACH', select_pose_to_approach(),
-            transitions={'succeeded':'MOVE_TO_GRASP_POSE', 
-                         'failed':'ANNOUNCE_FAILURE'})
+            transitions={'succeeded':'MOVE_TO_GRASP_POSE'})
         
-        smach.StateMachine.add('MOVE_TO_GRASP_POSE', approach_pose(SM.userdata.pose_to_approach),
+        smach.StateMachine.add('MOVE_TO_GRASP_POSE', approach_pose(),
             transitions={'succeeded':'ADJUST_POSE', 
                         'failed':'ANNOUNCE_FAILURE'})
                 
