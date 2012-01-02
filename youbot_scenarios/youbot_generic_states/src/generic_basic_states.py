@@ -4,6 +4,8 @@ roslib.load_manifest('youbot_generic_states')
 import rospy
 import smach
 import smach_ros
+import commands
+import os
 
 from arm_configuration import *
 
@@ -39,6 +41,16 @@ class announce_failure(smach.State):
             outcomes=['succeeded'])
 
     def execute(self, userdata):
+        
+        wav_path = commands.getoutput("rospack find youbot_generic_states")
+        
+        filename = wav_path + "/files/beep-3.wav"
+        print 'file: ', filename
+        
+        while True:
+            os.system("aplay -q " + filename)
+            rospy.sleep(1)
+        
         return 'succeeded'
     
         
