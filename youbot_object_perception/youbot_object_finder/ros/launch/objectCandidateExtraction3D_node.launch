@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<launch>	
+	<node name="objectCandidateExtraction3D_node" pkg="youbot_object_finder" type="objectCandidateExtraction3D_node" output="screen"> </node>
+</launch>
