@@ -103,7 +103,7 @@ tf::TransformListener *listenerKinectRGBToKinect;
 bool setup_tf = true;
 ros::ServiceClient *dynamicReconfigureClientKinectTilt;
 
-std::string nodeName = "objectCandidateExtraction3D_node";
+std::string nodeName = "youbot_object_finder";
 std::string toFrame = std::string("/base_link");
 std::string kinectTopicToSubscribe = std::string("/camera/rgb/points");
 //std::string kinectTopicToSubscribe = std::string("/kinect/rgb/points2");
@@ -415,12 +415,12 @@ int main(int argc, char **argv)
 	listenerKinectRGBToKinect = new tf::TransformListener();
 	objectCandidateExtractor = new CObjectCandidateExtraction(nodeName, SPHERICAL_DISTANCE);
 
-	pmd_pub1 = n.advertise<sensor_msgs::PointCloud2> ("object_perception/kinect_objects", 1);
-	pmd_pub2 = n.advertise<sensor_msgs::PointCloud2> ("object_perception/kinect_objects_surface", 1);
-	pmd_pub3 = n.advertise<sensor_msgs::PointCloud2> ("object_perception/kinect_input_point_cloud", 1);
-	pmd_pub4 = n.advertise<brsu_msgs::ObjectCandidateList3D> ("object_perception/ObjectCandidateList3D", 1);
+	pmd_pub1 = n.advertise<sensor_msgs::PointCloud2> ("/youbot_object_finder/kinect_objects", 1);
+	pmd_pub2 = n.advertise<sensor_msgs::PointCloud2> ("/youbot_object_finder/kinect_objects_surface", 1);
+	pmd_pub3 = n.advertise<sensor_msgs::PointCloud2> ("/youbot_object_finder/kinect_input_point_cloud", 1);
+	pmd_pub4 = n.advertise<brsu_msgs::ObjectCandidateList3D> ("/youbot_object_finder/ObjectCandidateList3D", 1);
 
-	srvGetKinectObjectCandidates = n.advertiseService("GetObjectCandidates3D", getKinectObjectCandidates3D);
+	srvGetKinectObjectCandidates = n.advertiseService("/youbot_object_finder/GetObjectCandidates3D", getKinectObjectCandidates3D);
 
 	ros::Subscriber sub = n.subscribe(kinectTopicToSubscribe, 1, objectCandidateExtractionCallback);
 
