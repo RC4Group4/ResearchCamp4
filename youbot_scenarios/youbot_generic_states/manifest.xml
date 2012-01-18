@@ -14,6 +14,9 @@
   <depend package="smach"/>
   <depend package="smach_ros"/>
   <depend package="youbot_arm_navigation"/>
+  <depend package="tf"/>
+  <depend package="brsu_srvs"/>
+  <depend package="geometry_msgs"/>
   
 </package>
 

@@ -14,14 +14,14 @@ class approach_pose(smach.State):
         smach.State.__init__(
             self,
             outcomes=['succeeded', 'failed'],
-            input_keys=['pose_to_approach'])
+            input_keys=['base_pose_to_approach'])
         
         
         self.move_base = actionlib.SimpleActionClient("/move_base", move_base_msgs.msg.MoveBaseAction)    
 
 
     def execute(self, userdata):
-        self.pose = userdata.pose_to_approach
+        self.pose = userdata.base_pose_to_approach
         
         if type(self.pose) is str:
             goal_pose = rospy.get_param('/script_server/base/' + self.pose)
