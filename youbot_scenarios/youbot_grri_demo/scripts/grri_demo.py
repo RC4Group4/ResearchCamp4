@@ -20,8 +20,9 @@ def main():
     SM = smach.StateMachine(outcomes=['overall_failed'])
     
     # world knowledge
-    SM.userdata.pose_list = ["grasp_blue_box", "grasp_red_box"]
-    SM.userdata.pose_to_approach = -1; 
+    SM.userdata.base_pose_list = ["grasp_blue_box", "grasp_red_box"]
+    SM.userdata.base_pose_to_approach = -1; 
+    SM.userdata.object_list = [];
 
     # open the container
     with SM:
@@ -41,7 +42,7 @@ def main():
             transitions={'succeeded':'SM_GRASP_OBJECT', 
                         'failed':'ANNOUNCE_FAILURE'})
 
-        smach.StateMachine.add('SM_GRASP_OBJECT', sm_grasp_object(),
+        smach.StateMachine.add('SM_GRASP_OBJECT', sm_grasp_nearest_object(),
             transitions={'object_grasped':'PLACE_OBJECT_ON_REAR_PLATFORM', 
                          'failed':'ANNOUNCE_FAILURE'})
                         
