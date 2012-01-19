@@ -27,6 +27,7 @@ def main():
     # open the container
     with SM:
         # add states to the container
+        '''
         smach.StateMachine.add('INIT_ROBOT', init_robot(),
             transitions={'succeeded':'SELECT_POSE_TO_APPROACH', 
                          'failed':'ANNOUNCE_FAILURE'})
@@ -37,21 +38,23 @@ def main():
         smach.StateMachine.add('MOVE_TO_GRASP_POSE', approach_pose(),
             transitions={'succeeded':'ADJUST_POSE', 
                         'failed':'ANNOUNCE_FAILURE'})
-                
+              
         smach.StateMachine.add('ADJUST_POSE', adjust_pose(),
             transitions={'succeeded':'SM_GRASP_OBJECT', 
                         'failed':'ANNOUNCE_FAILURE'})
-
-        smach.StateMachine.add('SM_GRASP_OBJECT', sm_grasp_nearest_object(),
-            transitions={'object_grasped':'PLACE_OBJECT_ON_REAR_PLATFORM', 
+        '''
+        smach.StateMachine.add('SM_GRASP_OBJECT', sm_grasp_random_object(),
+            transitions={'object_grasped':'overall_failed', 
                          'failed':'ANNOUNCE_FAILURE'})
-                        
+        '''                        
         smach.StateMachine.add('PLACE_OBJECT_ON_REAR_PLATFORM', place_obj_on_rear_platform(),
             transitions={'succeeded':'SELECT_POSE_TO_APPROACH', 
                         'failed':'ANNOUNCE_FAILURE'})
-        
+        '''        
         smach.StateMachine.add('ANNOUNCE_FAILURE', announce_failure(),
             transitions={'succeeded':'overall_failed'})
+
+
             
     # Start SMACH viewer
     smach_viewer = smach_ros.IntrospectionServer('GRRI_DEMO', SM, 'GRRI_DEMO')
