@@ -52,19 +52,21 @@ class place_obj_on_rear_platform(smach.State):
     def __init__(self):
         smach.State.__init__(
             self,
-            outcomes=['succeeded', 'failed'])
+            outcomes=['succeeded', 'failed'],
+            input_keys=['rear_platform_free_poses', 'rear_platform_occupied_poses'],
+            output_keys=['rear_platform_free_poses', 'rear_platform_occupied_poses'])
         
         global tf_listener
         self.move_arm = arm_configuration.ArmConfiguration(tf_listener)
 
-    def execute(self, userdata):
+    def execute(self, userdata):   
+        
+        #ToDo: get next free rear slot
+        
         self.move_arm.moveToConfiguration("zeroposition")
         self.move_arm.moveToConfiguration("pregrasp_back_init")
         self.move_arm.moveToConfiguration("pregrasp_back")
         
-        #if (self.position == "front"):
-        #   target_pose = self.move_arm._createPose(0.033 + 0.024 - 0.235, 0.0, 0.14, 0, -math.pi + 0.2, 0, "arm_link_0")
-        #else:
         target_pose = self.move_arm._createPose(0.033 + 0.024 - 0.28, 0.0, 0.14, 0, -math.pi + 0.3, 0, "arm_link_0")
         
         self.move_arm.moveToPose(target_pose)
