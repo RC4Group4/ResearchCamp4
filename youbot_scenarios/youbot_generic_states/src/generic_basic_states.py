@@ -52,6 +52,3 @@ class announce_failure(smach.State):
             rospy.sleep(1)
         
         return 'succeeded'
-    
-        
-    
