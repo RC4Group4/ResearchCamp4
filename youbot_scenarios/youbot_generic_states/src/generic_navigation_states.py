@@ -10,18 +10,19 @@ import tf
 
 class approach_pose(smach.State):
 
-    def __init__(self):
+    def __init__(self, pose = ""):
         smach.State.__init__(
             self,
             outcomes=['succeeded', 'failed'],
             input_keys=['base_pose_to_approach'])
         
-        
-        self.move_base = actionlib.SimpleActionClient("/move_base", move_base_msgs.msg.MoveBaseAction)    
-
+        self.move_base = actionlib.SimpleActionClient("/move_base", move_base_msgs.msg.MoveBaseAction)
+        self.pose = pose;    
 
     def execute(self, userdata):
-        self.pose = userdata.base_pose_to_approach
+        
+        if(self.pose == ""):
+            self.pose = userdata.base_pose_to_approach 
         
         if type(self.pose) is str:
             goal_pose = rospy.get_param('/script_server/base/' + self.pose)
@@ -33,8 +34,6 @@ class approach_pose(smach.State):
         else: # this should never happen
             rospy.logerr("Invalid pose format")
             return 'failed'  
-        
-        return 'succeeded'
                    
         self.move_base.wait_for_server()
                              
