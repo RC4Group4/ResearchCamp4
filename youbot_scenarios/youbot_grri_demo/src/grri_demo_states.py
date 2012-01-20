@@ -35,3 +35,41 @@ class adjust_pose(smach.State):
 
     def execute(self, userdata):
         return 'succeeded'
+    
+    
+class announce_full_platform(smach.State):
+
+    def __init__(self):
+        smach.State.__init__(
+            self,
+            outcomes=['succeeded', 'pending'],
+            input_key=['rear_platform_free_poses'],
+            output_key=['rear_platform_free_poses', 'rear_platform_occupied_poses'])
+
+    def execute(self, userdata):
+        
+        wav_path = commands.getoutput("rospack find youbot_generic_states")
+        
+        filename = wav_path + "/files/beep-3.wav"
+        print 'file: ', filename
+        
+        #ToDo: send turn velocity
+        
+        for i in range(5):
+            os.system("aplay -q " + filename)
+            rospy.sleep(1)
+            
+        #ToDo: Stop turning
+            
+        print "The platform is full, please remove all blocks and press -- C -- to continue the scenario"
+        ret = sss.wait_for_input()
+        if ret == 'C':
+            #all poses are free now
+            for i in len(userdata.rear_platform_occupied_poses):
+                userdata.rear_platform_free_poses.append(rear_platform_occupied_poses.pop())
+            return 'succeeded'
+        else:
+            print "Wrong input key"
+            return 'pending'
+        
+        
