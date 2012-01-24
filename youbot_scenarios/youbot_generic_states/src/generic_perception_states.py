@@ -64,7 +64,7 @@ class detect_object(smach.State):
         #stop perception component
         rospy.wait_for_service('/youbot_object_finder/stop', 5)
         try:
-            resp = self.object_finder_srv_stop()
+            resp_stop = self.object_finder_srv_stop()
         except rospy.ServiceException, e:
             error_message = "%s"%e
             rospy.logerr("calling <</youbot_object_finder/stop>> service not successfull, error: %s", error_message)
@@ -75,7 +75,7 @@ class detect_object(smach.State):
         self.move_arm.moveToConfiguration("zeroposition")
     
         if (len(resp.pointCloudCentroids) <= 0):
-            rospy.logerror("no graspable objects found");
+            rospy.logerr("no graspable objects found");
             userdata.object_list = []            
             return 'failed'
         

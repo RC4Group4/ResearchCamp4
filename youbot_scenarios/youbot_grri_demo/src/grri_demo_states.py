@@ -36,15 +36,27 @@ class adjust_pose(smach.State):
     def execute(self, userdata):
         return 'succeeded'
     
-    
+
+class check_platform_occupancy(smach.State):
+    def __init__(self):
+        smach.State.__init__(self, 
+            outcomes=['platform_full', 'platform_has_free_slots'],
+            input_keys=['rear_platform_free_poses'])
+
+    def execute(self, userdata):
+        if(len(userdata.platform_free_slots) > 0):
+            return 'platform_has_free_slots'
+        else:
+            return 'platform_full'
+
 class announce_full_platform(smach.State):
 
     def __init__(self):
         smach.State.__init__(
             self,
             outcomes=['succeeded', 'pending'],
-            input_key=['rear_platform_free_poses'],
-            output_key=['rear_platform_free_poses', 'rear_platform_occupied_poses'])
+            input_keys=['rear_platform_free_poses'],
+            output_keys=['rear_platform_free_poses', 'rear_platform_occupied_poses'])
 
     def execute(self, userdata):
         

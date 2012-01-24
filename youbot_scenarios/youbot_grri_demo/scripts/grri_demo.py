@@ -58,17 +58,16 @@ def main():
         
         smach.StateMachine.add('CHECK_PLATFORM_OCCUPANCY', check_platform_occupancy(),
             transitions={'platform_full':'MOVE_TO_INTRO', 
-                        'platform_free_slots':'SELECT_POSE_TO_APPROACH'})
+                        'platform_has_free_slots':'SELECT_POSE_TO_APPROACH'})
         
         smach.StateMachine.add('MOVE_TO_INTRO', approach_pose("intro"),
             transitions={'succeeded':'ANNOUCE_FULL_PLATFORM', 
                         'failed':'ANNOUNCE_FAILURE'})
         
-         smach.StateMachine.add('ANNOUCE_FULL_PLATFORM', announce_full_platform(),
+        smach.StateMachine.add('ANNOUCE_FULL_PLATFORM', announce_full_platform(),
             transitions={'succeeded':'SELECT_POSE_TO_APPROACH',
                          'pending':'ANNOUCE_FULL_PLATFORM'})
         
-                
         smach.StateMachine.add('ANNOUNCE_FAILURE', announce_failure(),
             transitions={'succeeded':'overall_failed'})
 

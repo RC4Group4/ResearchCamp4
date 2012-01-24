@@ -28,6 +28,9 @@ class grasp_random_object(smach.State):
         
         for object in userdata.object_list:         
             # ToDo: need to be adjusted to correct stuff
+            
+            print "object: ",object
+            
             if object.z <= 0.05 and object.z >= 0.15:
                 continue
             
@@ -39,7 +42,7 @@ class grasp_random_object(smach.State):
             break;
         
         self.move_arm.moveGripperClose()
-        rospy.sleep(2.0)
+        rospy.sleep(1.0)
         self.move_arm.moveToConfiguration("zeroposition")
         
         print 'grasp done'
@@ -61,19 +64,22 @@ class place_obj_on_rear_platform(smach.State):
 
     def execute(self, userdata):   
         
-        #ToDo: get next free rear slot
-        
         self.move_arm.moveToConfiguration("zeroposition")
         self.move_arm.moveToConfiguration("pregrasp_back_init")
         self.move_arm.moveToConfiguration("pregrasp_back")
         
-        target_pose = self.move_arm._createPose(0.033 + 0.024 - 0.28, 0.0, 0.14, 0, -math.pi + 0.3, 0, "arm_link_0")
+        pltf_pose = userdata.rear_platform_free_poses.pop()
+        
+        target_pose = self.move_arm._createPose(pltf_pose[0], pltf_pose[1], pltf_pose[2], pltf_pose[3], pltf_pose[4], pltf_pose[5], "arm_link_0")
         
         self.move_arm.moveToPose(target_pose)
         
         rospy.sleep(1.0)
         self.move_arm.moveGripperOpen()
-        rospy.sleep(2.0)
+        rospy.sleep(1.0)
+
+        userdata.rear_platform_occupied_poses.append(pltf_pose)
+        
         self.move_arm.moveToConfiguration("zeroposition")
    
         
