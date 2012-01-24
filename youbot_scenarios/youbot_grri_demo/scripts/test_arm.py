@@ -14,33 +14,43 @@ def main():
     
     print '1'
     
-    #move_arm.moveGripperClose()
+    move_arm.moveGripperOpen()
     
-    move_arm.moveToConfiguration("initposition")
+    move_arm.moveToConfiguration("initposition")    
+    #rospy.sleep(0.5)
     
-    #rospy.sleep(2.0)
+    move_arm.moveToConfiguration("zeroposition")
+    #rospy.sleep(0.5)
+
+    move_arm.moveToConfiguration("pregrasp_back_init")    
+    #rospy.sleep(0.5) 
     
-    #move_arm.moveToConfiguration("zeroposition")
+    move_arm.moveToConfiguration("pregrasp_back")
+    #rospy.sleep(0.5)
     
-    #move_arm.moveToConfiguration("pregrasp_back_init")
+    move_arm.moveToConfiguration("pregrasp_back_init")
+    #rospy.sleep(0.5)
     
-    #move_arm.moveToConfiguration("zeroposition")
+    move_arm.moveToConfiguration("zeroposition")
+    #rospy.sleep(0.5)   
     
-    #move_arm.moveToConfiguration("pregrasp_back")
-    
-    #move_arm.moveToConfiguration("zeroposition")   
-    
-    #rospy.sleep(2.0)
-    
-   # move_arm.moveToConfiguration("kinect_left_init")
-    
-    #rospy.sleep(2.0)
+    move_arm.moveToConfiguration("kinect_left_init")
+    #rospy.sleep(0.5)
      
-    #move_arm.moveToConfiguration("kinect_left")
+    move_arm.moveToConfiguration("kinect_left")
+    #rospy.sleep(0.5)
     
-    #rospy.sleep(2.0) 
+    move_arm.moveToConfiguration("kinect_left_init")
+    #rospy.sleep(0.5) 
     
-    #move_arm.moveToConfiguration("zeroposition")
+    move_arm.moveToConfiguration("zeroposition")
+    #rospy.sleep(0.5)
+    
+    move_arm.moveToConfiguration("initposition")    
+    
+    move_arm.moveGripperClose()
+    
+    
     
     print '2'
         
