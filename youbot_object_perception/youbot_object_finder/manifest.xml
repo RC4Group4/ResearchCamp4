@@ -39,7 +39,6 @@
   <!-- BRSU dependencies -->
   <depend package="brsu_srvs"/>
   <depend package="brsu_msgs"/>
-  <depend package="pr_msgs"/>
   
   <export>
     <cpp cflags="-I${prefix}/ros/include" lflags="-L${prefix}/lib"/>
