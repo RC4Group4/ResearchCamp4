@@ -8,5 +8,5 @@
 
 	<!-- perception -->
 		<!-- kinect -->
-		<!-- object finder -->
+	<include file="$(find youbot_object_finder)/ros/launch/objectCandidateExtraction3D_node.launch" />
 </launch>

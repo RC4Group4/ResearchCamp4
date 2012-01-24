@@ -14,9 +14,8 @@
   <depend package="youbot_generic_states"/>
   <depend package="youbot_bringup"/>
   <depend package="youbot_2dnav"/>
-  <depend package="geometry_msgs"/> <!-- only testing -->
+  <depend package="youbot_object_finder"/>
   
   <!-- kinect -->
-  <!-- object finder -->
-
+ 
 </package>

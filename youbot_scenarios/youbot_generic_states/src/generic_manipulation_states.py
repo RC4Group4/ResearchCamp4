@@ -80,5 +80,22 @@ class place_obj_on_rear_platform(smach.State):
         return 'succeeded'
     
     
+class move_arm_out_of_view(smach.State):
+
+    def __init__(self):
+        smach.State.__init__(
+            self,
+            outcomes=['succeeded', 'failed'])
+        
+        global tf_listener
+        self.move_arm = arm_configuration.ArmConfiguration(tf_listener)
+
+    def execute(self, userdata):   
+        
+        self.move_arm.moveToConfiguration("zeroposition")  
+        self.move_arm.moveToConfiguration("kinect_left_init") 
+        self.move_arm.moveToConfiguration("kinect_left") 
+           
+        return 'succeeded'
     
     
