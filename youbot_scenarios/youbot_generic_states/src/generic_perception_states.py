@@ -36,22 +36,7 @@ class detect_object(smach.State):
         for i in range(20): 
             print "find object try: ", i
             resp = self.object_finder_srv()
-             
-            ## ONLY TESTING ToDo: remove
-            resp.pointCloudCentroids = []
-            point = geometry_msgs.msg.Point()
-            point.header.frame_id = "/base_link"
-            point.header.stamp = rospy.Time.now()
-            point.pose.position.x = 0.4
-            point.pose.position.y = 0
-            point.pose.position.z = 0.20
-            point.pose.orientation.x = 0
-            point.pose.orientation.y = 0
-            point.pose.orientation.z = 0
-            point.pose.orientation.w = 1
-            resp.pointCloudCentroids.append(point)
-            ##### END TESTING
-             
+              
             if (len(resp.pointCloudCentroids) <= 0):
                 rospy.loginfo('found no objects')
                 rospy.sleep(1);
