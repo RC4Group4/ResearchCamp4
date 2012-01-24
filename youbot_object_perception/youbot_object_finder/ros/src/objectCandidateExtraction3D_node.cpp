@@ -49,6 +49,7 @@
 
 #include "ros/ros.h"
 #include "std_msgs/String.h"
+#include <std_srvs/Empty.h>
 
 #include "dynamic_reconfigure/ConfigDescription.h"
 #include "dynamic_reconfigure/Reconfigure.h"
@@ -102,6 +103,7 @@ pcl::PointCloud<pcl::PointXYZRGB> augmentPointCloud;
 tf::TransformListener *listenerKinectRGBToKinect;
 bool setup_tf = true;
 ros::ServiceClient *dynamicReconfigureClientKinectTilt;
+bool is_detection_enabled = false;
 
 std::string nodeName = "youbot_object_finder";
 std::string toFrame = std::string("/base_link");
@@ -115,52 +117,9 @@ int finalBestObjectsCentroidMsg;
 #define KINECT_MAX_TILT (30)
 #define KINECT_MIN_TILT (-30)
 
-void setKinectTilt(ros::ServiceClient *service_client, float tiltDegree)
-{
-	double parameter;
-
-	dynamic_reconfigure::Reconfigure reconfigure;
-	dynamic_reconfigure::Config updated_tilt_config;
-
-	if (tiltDegree > KINECT_MAX_TILT)
-		tiltDegree = KINECT_MAX_TILT;
-
-	if (tiltDegree < KINECT_MIN_TILT)
-		tiltDegree = KINECT_MIN_TILT;
-
-	updated_tilt_config.doubles.resize(1);
-
-	updated_tilt_config.doubles[0].name = "tilt";
-	updated_tilt_config.doubles[0].value = tiltDegree;
-
-	reconfigure.request.config = updated_tilt_config;
-
-	if (!service_client->call(reconfigure))
-		ROS_ERROR("Unable to set Kinect tilt value!");
-
-	if (ros::param::has("/kinect_driver/tilt"))
-	{
-		while (1) // wait for kinect
-		{
-
-			ros::param::get("/kinect_driver/tilt", parameter);
-			if (parameter == tiltDegree)
-			{
-				ROS_INFO("kinect_tilt set to %f ",tiltDegree);
-				break;
-			}
-			ROS_INFO("kinect_tilt set to %f ",tiltDegree);
-		}
-	}
-	else
-	{
-		ROS_WARN("No PARAM /kinect_driver/tilt found!");
-	}
-}
 
 int findBestObject(std::vector<geometry_msgs::Point> clusteredObjectsCentroidsMsg, std::vector<pcl::PointCloud<pcl::PointXYZRGBNormal> > clusteredObjects)
 {
-
 	int bestCandidateIdx = 0;
 	if (clusteredObjectsCentroidsMsg.size() > 0 && clusteredObjects.size() > 0)
 	{
@@ -193,57 +152,24 @@ int findBestObject(std::vector<geometry_msgs::Point> clusteredObjectsCentroidsMs
 	return bestCandidateIdx;
 }
 
-int findBestObject2(std::vector<geometry_msgs::Point> clusteredObjectsCentroidsMsg, std::vector<pcl::PointCloud<pcl::PointXYZRGBNormal> > clusteredObjects)
-{
-
-	int bestCandidateIdx = 0;
-	if (clusteredObjectsCentroidsMsg.size() > 0 && clusteredObjects.size() > 0)
-	{
-		std::vector<int> candidatesIdx;
-		for (unsigned int i = 0; i < clusteredObjects.size(); ++i)
-		{
-			if (clusteredObjects[i].points.size() > MIN_POINTS_FOR_BEST_OBJECT_CANDIDATE)
-			{
-				candidatesIdx.push_back(i);
-			}
-		}
-
-		if (candidatesIdx.size() > 0)
-		{
-			double minDistToGrasp = MIN_DIST_TO_GRASP;
-			bestCandidateIdx = candidatesIdx[0];
-			unsigned int maxPointCloudSize = 0;
-			for (unsigned int i = 0; i < candidatesIdx.size(); ++i)
-			{
-				double dist = sqrt(
-						pow(clusteredObjectsCentroidsMsg[candidatesIdx[i]].x, 2) + pow(clusteredObjectsCentroidsMsg[candidatesIdx[i]].y, 2) + pow(clusteredObjectsCentroidsMsg[candidatesIdx[i]].z, 2));
-				if (dist < minDistToGrasp && clusteredObjects[candidatesIdx[i]].points.size() > maxPointCloudSize)
-				{
-					bestCandidateIdx = candidatesIdx[i];
-					maxPointCloudSize = clusteredObjects[candidatesIdx[i]].points.size();
-				}
-
-			}
-		}
-	}
-	return bestCandidateIdx;
-}
 
 //TEST OBJECT DETECTION
 void objectCandidateExtractionCallback(const sensor_msgs::PointCloud2::ConstPtr& point_cloud_msg)
 {
+	if(!is_detection_enabled)
+		return;
+
 	ROS_INFO("[%s/objectCandidateExtractionCallback] started...", nodeName.c_str());
 	std::vector<sensor_msgs::PointCloud2> clusteredObjectsMsg;
 	std::vector<geometry_msgs::Point> clusteredObjectsCentroidsMsg;
 	sensor_msgs::PointCloud2 pointsCloudMsg;
 	int bestCandidateIdx = 0;
  
-  if(point_cloud_msg->width <=0 && point_cloud_msg->height <=0)
-  {
-    ROS_INFO("[%s] pointCloud Msg empty",nodeName.c_str());
-    return ;
-  }
-
+	if(point_cloud_msg->width <=0 && point_cloud_msg->height <=0)
+	{
+		ROS_INFO("[%s] pointCloud Msg empty",nodeName.c_str());
+		return ;
+	}
 
 	ros::Time start, finish;
 	start = ros::Time::now();
@@ -259,21 +185,22 @@ void objectCandidateExtractionCallback(const sensor_msgs::PointCloud2::ConstPtr&
 	sensor_msgs::PointCloud2 pointCloud2MsgTransformed;
 
 	std::string fromFrame = std::string(point_cloud_msg->header.frame_id);
-  ROS_INFO("[%s] pointCloud tf transform... ",nodeName.c_str());
+	ROS_INFO("[%s] pointCloud tf transform... ",nodeName.c_str());
 	if(!toolBox.transformPointCloud(*listenerKinectRGBToKinect, fromFrame, toFrame, *point_cloud_msg, pointCloud2MsgTransformed))
 	{
 		 ROS_INFO("[%s] pointCloud tf transform...failed",nodeName.c_str());
 		 counter = 0;
 		 return;
 	}
-  ROS_INFO("[%s] pointCloud tf transform...done",nodeName.c_str());
+
+	ROS_INFO("[%s] pointCloud tf transform...done",nodeName.c_str());
 	pcl::fromROSMsg(pointCloud2MsgTransformed, point_cloud);
 
-  if(point_cloud.points.size() <=0 )
-  {
-    ROS_INFO("[%s] pointCloud empty ",nodeName.c_str());
-    return;
-  }
+	if(point_cloud.points.size() <=0 )
+	{
+		ROS_INFO("[%s] pointCloud empty ",nodeName.c_str());
+		return;
+  	}
 
 	if (counter == 0)
 	{
@@ -285,9 +212,6 @@ void objectCandidateExtractionCallback(const sensor_msgs::PointCloud2::ConstPtr&
 	}
 	else if (max_augment == (counter - 1))
 	{
-
-		//	kinectTiltDegree = KINECT_ANGLE_INIT;
-		//setKinectTilt(dynamicReconfigureClientKinectTilt,kinectTiltDegree);
 		ROS_INFO("[%s] extract object candidates",nodeName.c_str());
 
 		augmentPointCloud = toolBox.filterDistance(augmentPointCloud, X_DISTANCE_MIN, X_DISTANCE_MAX, "x");
@@ -393,7 +317,6 @@ void objectCandidateExtractionCallback(const sensor_msgs::PointCloud2::ConstPtr&
 /*Service getKinect_objectCandidateList*/
 bool getKinectObjectCandidates3D(brsu_srvs::GetObjectCandidateList3D::Request &req, brsu_srvs::GetObjectCandidateList3D::Response &res)
 {
-
 	mutexExtractedObjects.lock();
 	res.pointClouds = finalClusteredObjectsMsg;
 	res.pointCloudCentroids = finalClusteredObjectsCenroidsMsg;
@@ -402,6 +325,20 @@ bool getKinectObjectCandidates3D(brsu_srvs::GetObjectCandidateList3D::Request &r
 	finalClusteredObjectsCenroidsMsg.clear();
 	mutexExtractedObjects.unlock();
 
+	return true;
+}
+
+bool start(std_srvs::Empty::Request &req, std_srvs::Empty::Response &res)
+{
+	is_detection_enabled = true;
+	ROS_INFO("3D object finder detector ENABLED");
+	return true;
+}
+
+bool stop(std_srvs::Empty::Request &req, std_srvs::Empty::Response &res)
+{
+	is_detection_enabled = false;
+	ROS_INFO("3D object finder detector DISABLED");
 	return true;
 }
 
@@ -420,11 +357,21 @@ int main(int argc, char **argv)
 	pmd_pub3 = n.advertise<sensor_msgs::PointCloud2> ("/youbot_object_finder/kinect_input_point_cloud", 1);
 	pmd_pub4 = n.advertise<brsu_msgs::ObjectCandidateList3D> ("/youbot_object_finder/ObjectCandidateList3D", 1);
 
+	//Service Server
 	srvGetKinectObjectCandidates = n.advertiseService("/youbot_object_finder/GetObjectCandidates3D", getKinectObjectCandidates3D);
+	ros::ServiceServer srv_start = n.advertiseService("/youbot_object_finder/start", start);
+	ros::ServiceServer srv_stop = n.advertiseService("/youbot_object_finder/stop", stop);
 
 	ros::Subscriber sub = n.subscribe(kinectTopicToSubscribe, 1, objectCandidateExtractionCallback);
 
-	ros::spin();
+	ros::Rate loop_rate(1);
+	while(ros::ok())
+	{
+		ros::spinOnce();
+
+		if(!is_detection_enabled)
+			loop_rate.sleep();
+	}
 
 	return 0;
 }
