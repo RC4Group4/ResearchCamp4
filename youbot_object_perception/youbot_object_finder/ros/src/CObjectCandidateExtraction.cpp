@@ -7,7 +7,7 @@
 
 #include "CObjectCandidateExtraction.h"
 
-#define THRESHOLD_POINT_ABOVE_LOWER_PLANE 0.005f
+#define THRESHOLD_POINT_ABOVE_LOWER_PLANE 0.01f
 //0.005f worked fine and stabile but it can no extract cell phone height like objects
 // 0.003f is fine for cell phone like but confidence is lower!!!
 //This is a major stability factor for the extraction

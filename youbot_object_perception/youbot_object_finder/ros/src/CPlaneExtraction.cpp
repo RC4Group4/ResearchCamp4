@@ -6,7 +6,7 @@
  */
 #include "CPlaneExtraction.h"
 #include <Eigen/StdVector>
-#define THRESHOLD_JOIN_PLANES_HEIGHT 0.01f
+#define THRESHOLD_JOIN_PLANES_HEIGHT 0.007f
 //Difference of plane heights
 //0.01 worked fine!!
 //in m
