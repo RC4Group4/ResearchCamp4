@@ -4,9 +4,9 @@
 	<include file="$(find youbot_bringup)/robots/youbot.launch" />
 
 	<!-- navigation -->
-	<include file="$(find youbot_2dnav)/ros/launch/youbot_2dnav.launch" />
+	<include file="$(find youbot_2dnav)/ros/launch/2dnav.launch" />
 
 	<!-- perception -->
-		<!-- kinect -->
+	<include file="$(find youbot_bringup)/components/kinect.launch" />
 	<include file="$(find youbot_object_finder)/ros/launch/objectCandidateExtraction3D_node.launch" />
 </launch>
