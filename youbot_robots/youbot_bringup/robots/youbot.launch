@@ -6,7 +6,7 @@
 
 	<include file="$(find youbot_bringup)/components/arm.launch" />
 	
-	<include file="$(find youbot_navigation_common)/launch/base_front_hokuyo_node.launch" />
+	<include file="$(find youbot_bringup)/components/base_front_hokuyo_node.launch" />
 
 	<include file="$(find youbot_teleop)/ros/launch/teleop_joypad.launch" />
 </launch>
