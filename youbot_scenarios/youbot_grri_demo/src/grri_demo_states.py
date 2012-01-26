@@ -44,7 +44,7 @@ class check_platform_occupancy(smach.State):
             input_keys=['rear_platform_free_poses'])
 
     def execute(self, userdata):
-        if(len(userdata.platform_free_slots) > 0):
+        if(len(userdata.rear_platform_free_poses) > 0):
             return 'platform_has_free_slots'
         else:
             return 'platform_full'

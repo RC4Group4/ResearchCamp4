@@ -71,7 +71,8 @@ class detect_object(smach.State):
             return 'failed'
     
         #move arm to home
-        self.move_arm.moveToConfiguration("kinect_left_init")
+        #self.move_arm.moveToConfiguration("kinect_left_init")
+        #self.move_arm.moveToConfiguration("pregrasp_back")
         self.move_arm.moveToConfiguration("zeroposition")
     
         if (len(resp.pointCloudCentroids) <= 0):
