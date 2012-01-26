@@ -83,13 +83,13 @@ pcl::PointCloud<pcl::PointXYZRGB> augmentPointCloud;
 
 #define SPHERICAL_DISTANCE 2.5f
 
-#define X_DISTANCE_MIN 0.0f
+#define X_DISTANCE_MIN 0.2f
 #define X_DISTANCE_MAX 1.0f
 
 #define Y_DISTANCE_MIN -1.0f
 #define Y_DISTANCE_MAX 1.0f
 
-#define Z_DISTANCE_MIN 0.0f
+#define Z_DISTANCE_MIN -0.5f
 #define Z_DISTANCE_MAX 0.5f
 
 #define KINECT_ANGLE_INIT -30
