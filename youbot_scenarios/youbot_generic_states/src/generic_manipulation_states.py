@@ -25,8 +25,6 @@ class grasp_random_object(smach.State):
         self.move_arm.moveGripperOpen()
         self.move_arm.moveToConfiguration("zeroposition")
         
-        print 'grasp obj list: ', userdata.object_list
-        
         for object in userdata.object_list:         
             # ToDo: need to be adjusted to correct stuff           
             if object.z <= 0.18 and object.z >= 0.25:
@@ -35,21 +33,22 @@ class grasp_random_object(smach.State):
             #target_pose = self.move_arm._createPose(object.x + 0.01, 0.0, object.z + 0.06, 0, math.pi, 0)
             target_pose = self.move_arm._createPose(object.x - 0.06, object.y - 0.02, object.z + 0.02, 0, ((math.pi/2) + (math.pi/4)), 0)
             
-            print "target pose: ", target_pose
+            ik_result = self.move_arm.moveToPose(target_pose)
             
-            print 'before grasp send'
-            self.move_arm.moveToPose(target_pose)
-            print 'before grasp send'
-            rospy.sleep(1.0)
-            break;
+            if ik_result == True:
+                self.move_arm.moveGripperClose()
+                rospy.sleep(4.0)
+                self.move_arm.moveToConfiguration("zeroposition")        
+                return 'succeeded'    
+            else:
+                print 'could not find IK for current object'
+
+        return 'failed'
         
-        self.move_arm.moveGripperClose()
-        rospy.sleep(4.0)
-        self.move_arm.moveToConfiguration("zeroposition")
         
-        print 'grasp done'
         
-        return 'succeeded'
+        
+        
     
 
 class place_obj_on_rear_platform(smach.State):
@@ -97,7 +96,6 @@ class move_arm_out_of_view(smach.State):
         self.move_arm = arm_configuration.ArmConfiguration(tf_listener)
 
     def execute(self, userdata):   
-        
         self.move_arm.moveToConfiguration("zeroposition")  
         self.move_arm.moveToConfiguration("pregrasp_back_init")
         self.move_arm.moveToConfiguration("pregrasp_back")

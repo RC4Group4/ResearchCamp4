@@ -68,12 +68,7 @@ class detect_object(smach.State):
         except rospy.ServiceException, e:
             error_message = "%s"%e
             rospy.logerr("calling <</youbot_object_finder/stop>> service not successfull, error: %s", error_message)
-            return 'failed'
-    
-        #move arm to home
-        #self.move_arm.moveToConfiguration("kinect_left_init")
-        #self.move_arm.moveToConfiguration("pregrasp_back")
-        self.move_arm.moveToConfiguration("zeroposition")
+            return 'failed'       
     
         if (len(resp.pointCloudCentroids) <= 0):
             rospy.logerr("no graspable objects found");

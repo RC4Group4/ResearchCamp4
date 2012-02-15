@@ -6,6 +6,7 @@ import smach
 import smach_ros
 import actionlib
 import move_base_msgs.msg
+import geometry_msgs.msg
 import tf
 
 class approach_pose(smach.State):
@@ -15,8 +16,8 @@ class approach_pose(smach.State):
             self,
             outcomes=['succeeded', 'failed'],
             input_keys=['base_pose_to_approach'])
-        
-        self.move_base = actionlib.SimpleActionClient("/move_base", move_base_msgs.msg.MoveBaseAction)
+
+        self.move_base = actionlib.SimpleActionClient('move_base', move_base_msgs.msg.MoveBaseAction)
         self.pose = pose;    
 
     def execute(self, userdata):
@@ -34,16 +35,25 @@ class approach_pose(smach.State):
         else: # this should never happen
             rospy.logerr("Invalid pose format")
             return 'failed'  
-                   
-        self.move_base.wait_for_server()
-                             
+         
+	print 'preparing goal'                              
         goal = move_base_msgs.msg.MoveBaseGoal()
-        goal.target_pose.header.frame_id = "map"
+	goal.target_pose = geometry_msgs.msg.PoseStamped()
+        goal.target_pose.header.frame_id = "/map"
         goal.target_pose.header.stamp = rospy.Time.now()
         goal.target_pose.pose.position.x = goal_pose[0]
         goal.target_pose.pose.position.y = goal_pose[1]
-        goal.target_pose.pose.orientation = tf.transformations.quaternion_from_euler(0.0, 0.0, goal_pose[2])
+	quat = tf.transformations.quaternion_from_euler(0.0, 0.0, goal_pose[2])
+        goal.target_pose.pose.orientation.x = quat[0]
+        goal.target_pose.pose.orientation.y = quat[1]
+        goal.target_pose.pose.orientation.z = quat[2]
+        goal.target_pose.pose.orientation.w = quat[3]
+
+#      	print 'wait for move base action server'          
+#       self.move_base.wait_for_server()
+
         
+	print 'sending goal'          
         self.move_base.send_goal(goal)
                 
         while True:                
