@@ -23,15 +23,17 @@ class approach_pose(smach.State):
     def execute(self, userdata):
         
         if(self.pose == ""):
-            self.pose = userdata.base_pose_to_approach 
+            self.pose2 = userdata.base_pose_to_approach
+	else:
+	    self.pose2 = self.pose 
         
-        if type(self.pose) is str:
-            goal_pose = rospy.get_param('/script_server/base/' + self.pose)
-            rospy.loginfo("moving to location: %s at %s", self.pose, goal_pose) 
+        if type(self.pose2) is str:
+            goal_pose = rospy.get_param('/script_server/base/' + self.pose2)
+            rospy.loginfo("moving to location: %s at %s", self.pose2, goal_pose) 
             
-        elif type(self.pose) is list and len(self.pose) == 3:
-            rospy.loginfo("moving to pose: %s", self.pose)
-            goal_pose = self.pose
+        elif type(self.pose2) is list and len(self.pose2) == 3:
+            rospy.loginfo("moving to pose: %s", self.pose2)
+            goal_pose = self.pose2
         else: # this should never happen
             rospy.logerr("Invalid pose format")
             return 'failed'  

@@ -50,6 +50,7 @@ class detect_object(smach.State):
     def execute(self, userdata):     
         #get object pose list
         rospy.wait_for_service('/youbot_object_finder/GetObjectCandidates3D', 30)
+	rospy.sleep(3)
         for i in range(20): 
             print "find object try: ", i
             resp = self.object_finder_srv()
