@@ -1,3 +1,0 @@
-[submodule "youbot_manipulation"]
-	path = youbot_manipulation
-	url = git://github.com/svenschneider/youbot-manipulation.git
