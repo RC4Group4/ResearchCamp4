@@ -1,0 +1,21 @@
+<package>
+  <description brief="raw_grri_demo">
+
+     raw_grri_demo
+
+  </description>
+  <author>fred</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/raw_grri_demo</url>
+  
+  <depend package="smach"/>
+  <depend package="smach_ros"/>
+  <depend package="raw_generic_states"/>
+  <depend package="raw_bringup"/>
+  <depend package="raw_2dnav"/>
+  <depend package="raw_object_finder"/>
+  
+  <!-- kinect -->
+ 
+</package>

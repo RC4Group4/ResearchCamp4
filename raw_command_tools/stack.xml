@@ -1,0 +1,9 @@
+<stack>
+  <description brief="raw_command_tools">raw_command_tools</description>
+  <author>Maintained by fred</author>
+  <license>BSD</license>  
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/raw_command_tools</url>
+  <depend stack="ros" />
+
+</stack>

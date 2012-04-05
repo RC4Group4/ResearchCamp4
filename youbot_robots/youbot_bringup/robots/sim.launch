@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<launch>
-	<include file="$(find youbot_description)/launch/youbot_description.launch" />
-
-	<include file="$(find youbot_description)/launch/youbot_publisher.launch" />
-	
-	<include file="$(find youbot_teleop)/ros/launch/teleop_joypad.launch" />
-</launch>

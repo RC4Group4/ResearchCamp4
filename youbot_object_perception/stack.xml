@@ -1,9 +1,0 @@
-<stack>
-  <description brief="youbot_object_perception">youbot_object_perception</description>
-  <author>Maintained by fred</author>
-  <license>BSD</license>  
-  <review status="unreviewed" notes=""/>
-  <url>http://ros.org/wiki/youbot_object_perception</url>
-  <depend stack="ros" />
-
-</stack>

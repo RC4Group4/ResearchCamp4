@@ -1,0 +1,14 @@
+<package>
+  <description brief="raw_2dnav">
+
+     raw_2dnav
+
+  </description>
+  <author>fred</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/raw_2dnav</url>
+
+</package>
+
+
