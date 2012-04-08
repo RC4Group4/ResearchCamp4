@@ -1,0 +1,9 @@
+<stack>
+  <description brief="raw_manipulation">raw_manipulation</description>
+  <author>Maintained by fred</author>
+  <license>BSD</license>  
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/raw_manipulation</url>
+  <depend stack="ros" />
+
+</stack>
