@@ -15,7 +15,6 @@
   <depend package="raw_bringup"/>
   <depend package="raw_2dnav"/>
   <depend package="raw_object_finder"/>
-  
-  <!-- kinect -->
+  <depend package="raw_simple_pick"/>
  
 </package>
