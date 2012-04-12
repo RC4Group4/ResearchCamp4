@@ -7,7 +7,7 @@
 
 #include <ros/ros.h>
 #include <geometry_msgs/Twist.h>
-#include <joy/Joy.h>
+#include <sensor_msgs/Joy.h>
 
 #define MAX_JOYPAD			1.0
 
@@ -31,7 +31,7 @@ double linear_y_factor = 0;
 double angular_factor = 0;
 
 
-void joy_cmds(const joy::Joy::ConstPtr& command)
+void joy_cmds(const sensor_msgs::Joy::ConstPtr& command)
 {
 	deadman_pressed_prev = deadman_pressed;
 	deadman_pressed = (bool)command->buttons[BUTTON_DEADMAN];
@@ -56,7 +56,7 @@ int main(int argc, char **argv)
     ros::param::param<double>("~max_angular_speed", max_speed, 0.5);
     angular_factor = (2*max_speed) / (2*MAX_JOYPAD);
 
-    ros::Subscriber sub_joy = nh.subscribe<joy::Joy>("/joy", 1, joy_cmds);
+    ros::Subscriber sub_joy = nh.subscribe<sensor_msgs::Joy>("/joy", 1, joy_cmds);
     ros::Publisher pub_base = nh.advertise<geometry_msgs::Twist>("/cmd_vel", 1);
 
     geometry_msgs::Twist base_cmd;
