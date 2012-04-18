@@ -40,8 +40,8 @@
 
 #include "pcl_ros/segmentation/extract_clusters.h"
 
-#include "StructPlanarSurface.h" //since we need the structPlanarSurface
-#include "CToolBoxROS.h"
+#include "struct_planar_surface.h" //since we need the structPlanarSurface
+#include "toolbox_ros.h"
 #include <time.h>
 #include <algorithm>
 #include <vector>

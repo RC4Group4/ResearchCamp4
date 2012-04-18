@@ -14,11 +14,9 @@
 #include <ros/ros.h>
 #include "sensor_msgs/Image.h"
 
-#include "image_transport/image_transport.h"
 #include "sensor_msgs/PointCloud.h"
 #include "sensor_msgs/PointCloud2.h"
 #include "sensor_msgs/point_cloud_conversion.h"
-//#include "/opt/ros/cturtle/stacks/vision_opencv/cv_bridge/include/cv_bridge/CvBridge.h"
 
 #include "pcl/ModelCoefficients.h"
 
@@ -42,7 +40,7 @@
 #include "pcl/surface/mls.h"
 #include "pcl/segmentation/extract_polygonal_prism_data.h"
 
-#include "StructPlanarSurface.h" //since we need the structPlanarSurface
+#include "struct_planar_surface.h" //since we need the structPlanarSurface
 //template <typename pointCloud>
 
 

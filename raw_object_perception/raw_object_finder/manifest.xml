@@ -1,49 +1,25 @@
 <package>
   <description brief="raw_object_finder">
 
-     raw_object_finder_node
+     raw_object_finder
 
   </description>
   <author>Christian Mueller</author>
   <license>BSD</license>
   <review status="unreviewed" notes=""/>
   <url>http://ros.org/wiki/raw_object_finder</url>
-
-  <depend package="std_msgs"/>
-  <depend package="std_srvs"/>
-  <depend package="sensor_msgs"/>
-  <depend package="geometry_msgs"/>
-  <depend package="rospy"/>
   <depend package="roscpp"/>
+  <depend package="tf"/>
+  <depend package="eigen"/>
   <depend package="pcl_ros"/>
   <depend package="pcl"/>
-  <depend package="eigen"/>
-  <depend package="wxpropgrid"/> 
-  <!-- -->
-<!--   <depend package="vtk"/>  -->
-   <depend package="terminal_tools"/> 
-  <depend package="pcl_visualization"/> 
-  <depend package="visualization_msgs"/>
-  <!-- -->
-  <depend package="image_transport"/>
-  <depend package="image_geometry"/>
-  <depend package="dynamic_reconfigure"/>
- 
   <depend package="opencv2"/>
   <depend package="cv_bridge"/>
-  <depend package="tf"/>
-  <depend package="image_view"/>
-  
-  <rosdep name="wxwidgets"/>
-  
-  <!-- BRSU dependencies -->
+  <depend package="sensor_msgs"/>
+  <depend package="geometry_msgs"/>
+  <depend package="std_srvs"/>
   <depend package="raw_srvs"/>
   <depend package="raw_msgs"/>
-  
-  <export>
-    <cpp cflags="-I${prefix}/ros/include" lflags="-L${prefix}/lib"/>
-  </export>
+  <depend package="object_manipulation_msgs"/>
   
 </package>
-
-

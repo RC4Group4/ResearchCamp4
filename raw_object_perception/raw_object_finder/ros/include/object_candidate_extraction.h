@@ -23,10 +23,8 @@
 #include "pcl/segmentation/extract_polygonal_prism_data.h"
 
 #include "sensor_msgs/Image.h"
-#include "image_transport/image_transport.h"
 #include "sensor_msgs/PointCloud.h"
 #include "sensor_msgs/PointCloud2.h"
-//#include "/opt/ros/cturtle/stacks/vision_opencv/cv_bridge/include/cv_bridge/CvBridge.h"
 
 #include "pcl/ModelCoefficients.h"
 #include "pcl/io/pcd_io.h"
@@ -40,9 +38,8 @@
 #include "pcl/common/common_headers.h"
 #include "pcl/range_image/range_image.h"
 
-#include "StructPlanarSurface.h" //since we need the structPlanarSurface
-#include "CToolBoxROS.h"
-#include "CPlaneExtraction.h"
+#include "toolbox_ros.h"
+#include "plane_extraction.h"
 
 #include <iostream>
 #include <cstdlib>
@@ -55,7 +52,7 @@
 
 #include <string>
 
-#include "StructPlanarSurface.h" //since we need the structPlanarSurface
+#include "struct_planar_surface.h" //since we need the structPlanarSurface
 
 //#define EIGEN_DONT_ALIGN_STATICALLY
 
