@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <launch>
-	<include file="$(find youbot_oodl)/launch/raw_oodl_driver.launch" />
+	<include file="$(find youbot_oodl)/launch/youbot_oodl_driver.launch" />
 	
-	<include file="$(find youbot_oodl)/launch/raw_joint_state_publisher.launch" />
+	<include file="$(find youbot_oodl)/launch/youbot_joint_state_publisher.launch" />
 
 	<include file="$(find raw_bringup)/components/arm.launch" />
 	
