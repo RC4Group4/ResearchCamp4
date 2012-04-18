@@ -283,7 +283,7 @@ std::vector<structPlanarSurface> CPlaneExtraction::createPlanarHierarchy(
 				//reconstruct does not fill width and height of the pointcloud
 
 
-				planarSurfaces[iterCheckJoin].area = toolBox.areaConvexHull2d(planarSurfaces[iterCheckJoin].convexHull);
+				//planarSurfaces[iterCheckJoin].area = toolBox.areaConvexHull2d(planarSurfaces[iterCheckJoin].convexHull);
 
 				planarSurfaces[iterCheckJoin].centroid
 						= toolBox.centroidHull2d(
