@@ -63,6 +63,9 @@ private:
 	CToolBoxROS toolBox;
 	CPlaneExtraction horizontalSurfaceExtractor;
 	std::string nodeName;
+	ros::NodeHandle nh;
+	double threshold_point_above_lower_plane;
+	int min_points_per_objects;
 
 	float fDistance; /*max distance from camera*/
 	float dZAxisOffSet; /*distance(height) to compensate difference between object and plane*/
@@ -73,7 +76,7 @@ private:
 public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 	CObjectCandidateExtraction();
-	CObjectCandidateExtraction(std::string nodeName, float fDistance);
+	CObjectCandidateExtraction(ros::NodeHandle &nh, std::string nodeName, float fDistance);
 	void extractObjectCandidates(
 			pcl::PointCloud<pcl::PointXYZRGB> &point_cloud, pcl::PointCloud<
 					pcl::PointXYZRGBNormal> &planar_point_cloud, std::vector<

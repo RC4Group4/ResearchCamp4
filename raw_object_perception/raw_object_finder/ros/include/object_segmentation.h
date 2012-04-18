@@ -45,6 +45,7 @@ class ObjectSegmentation {
 		tf::TransformListener _tf_listener;
 		std::string _node_name;
 		std::string _camera_frame;
+		double _downsampling_distance;
 
 		RoiExtraction *_roi_extractor;
 		sensor_msgs::CvBridge _bridge;

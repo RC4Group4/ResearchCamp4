@@ -15,11 +15,13 @@ ObjectSegmentation::ObjectSegmentation(const std::string &node_name)
 	pn.param("min_z", _dist_min_z,  0.5);
 	pn.param("max_z", _dist_max_z,  1.5);
 	pn.param("camera_frame", _camera_frame, std::string("/openni_rgb_optical_frame"));
+	pn.param("downsampling_distance", _downsampling_distance, 0.02);
+	ROS_INFO_STREAM("   parameter 'downsampling_distance': " << this->_downsampling_distance);
 
 	double spherical_distance;
 	pn.param("spherical_distance", spherical_distance, 2.5);
 
-	_object_candidate_extractor = new CObjectCandidateExtraction(node_name, spherical_distance);
+	_object_candidate_extractor = new CObjectCandidateExtraction(pn, node_name, spherical_distance);
 	_roi_extractor = new RoiExtraction(_camera_frame);
 
 	_objects_points_pub = pn.advertise<sensor_msgs::PointCloud2>("segmented_objects_points", 1);
@@ -74,6 +76,7 @@ void ObjectSegmentation::Segment(const sensor_msgs::PointCloud2 &msg)
 		std::vector<geometry_msgs::PoseStamped> centroids_msgs;
 		std::vector<raw_msgs::Object> segmented_objects;
 
+		unsigned int object_count = 0;
 		for (unsigned int i = 0; i < hierarchy_planes.size(); i++) {
 			structPlanarSurface plane = hierarchy_planes[i];
 
@@ -110,8 +113,11 @@ void ObjectSegmentation::Segment(const sensor_msgs::PointCloud2 &msg)
 
 				// save for visualization
 				clustered_objects.push_back(object);
+				++object_count;
 			}
 		}
+
+		ROS_INFO("found %d objects on %d planes", object_count, hierarchy_planes.size());
 
 
 		// remember the result of the segmentation for the service
@@ -186,7 +192,7 @@ bool ObjectSegmentation::PreparePointCloud(const sensor_msgs::PointCloud2 &input
 	output = _tool_box.filterDistance(output, _dist_min_y, _dist_max_y, "y");
 	output = _tool_box.filterDistance(output, _dist_min_z, _dist_max_z, "z");
 
-	_tool_box.subsampling(output, 0.008);
+	_tool_box.subsampling(output, this->_downsampling_distance);
 
 	if (output.points.empty()) {
 		ROS_INFO("[%s] point cloud empty after filtering", _node_name.c_str());
