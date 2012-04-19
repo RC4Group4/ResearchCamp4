@@ -5,9 +5,9 @@
  *      Author: Christian Mueller
  */
 
-#include "CObjectCandidateExtraction.h"
+#include "object_candidate_extraction.h"
 
-#define THRESHOLD_POINT_ABOVE_LOWER_PLANE 0.01f
+//#define THRESHOLD_POINT_ABOVE_LOWER_PLANE 0.003f  --> now as member variable and set by the param from the parameter server
 //0.005f worked fine and stabile but it can no extract cell phone height like objects
 // 0.003f is fine for cell phone like but confidence is lower!!!
 //This is a major stability factor for the extraction
@@ -25,18 +25,25 @@
 //worked fine 0.12f
 //0.1 worked fine without object-height threshold
 
-#define MIN_OBJECT_POINT_SIZE 5
+//#define MIN_OBJECT_POINT_SIZE 10	--> now as member variable and set by the param from the parameter server
 
 CObjectCandidateExtraction::CObjectCandidateExtraction() {
 	this->nodeName = "---/CObjectCandidateExtraction";
 }
 
-CObjectCandidateExtraction::CObjectCandidateExtraction(std::string nodeName,
+CObjectCandidateExtraction::CObjectCandidateExtraction(ros::NodeHandle &nh, std::string nodeName,
 		float fDistance) {
 
 	horizontalSurfaceExtractor = CPlaneExtraction(nodeName);
 	this->nodeName = nodeName + "/CObjectCandidateExtraction";
 	this->fDistance = fDistance; // std max Kinect distance
+	this->nh = nh;
+
+	this->nh.param("threshold_points_above_lower_plane", this->threshold_point_above_lower_plane, 0.02);
+	ROS_INFO_STREAM("   parameter 'threshold_points_above_lower_plane': " << this->threshold_point_above_lower_plane);
+	this->nh.param("min_points_per_objects", this->min_points_per_objects, 10);
+	ROS_INFO_STREAM("   parameter 'min_points_per_objects': " << this->min_points_per_objects);
+
 
 	/* initialize random seed: */
 	srand ( time(NULL));
@@ -48,7 +55,7 @@ void CObjectCandidateExtraction::extractObjectCandidates(pcl::PointCloud<
 		pcl::PointCloud<pcl::PointXYZRGBNormal> &planar_point_cloud,
 		std::vector<structPlanarSurface> &hierarchyPlanes) {
 
-	ROS_INFO("[%s/extractObjectCandidates] extractObjectCandidates started ...",this->nodeName.c_str());
+	ROS_DEBUG("[extractObjectCandidates] extractObjectCandidates started ...");
 	ros::Time start, start2, finish, finish2, start3, finish3;
 	start = ros::Time::now();
 	std::vector<pcl::PointCloud<pcl::PointXYZRGBNormal> > clusteredObjects;
@@ -61,12 +68,12 @@ void CObjectCandidateExtraction::extractObjectCandidates(pcl::PointCloud<
 	//	std::vector<bool> delete_total_point_cloud;
 
 
-	ROS_DEBUG("[%s/extractObjectCandidates] MovingLeastSquares started ... ",this->nodeName.c_str());
+	ROS_DEBUG("[extractObjectCandidates] MovingLeastSquares started ... ");
 	//	total_point_cloud = point_cloud_normal = this->toolBox.movingLeastSquares(
 	//			point_cloud, 0.02f); //0.02f works good with 0.008 subsampling//0.01 veryfast but not good
 	total_point_cloud = point_cloud_normal = this->toolBox.movingLeastSquares(
 			point_cloud, 0.01f); //0.02f works good //0.01 veryfast but not good
-	ROS_DEBUG("[%s/extractObjectCandidates] MovingLeastSquares done ... ",this->nodeName.c_str());
+	ROS_DEBUG("[extractObjectCandidates] MovingLeastSquares done ... ");
 
 	hierarchyPlanes = horizontalSurfaceExtractor.extractMultiplePlanes(
 			point_cloud_normal, planar_point_cloud, clusteredPlanes, 2);
@@ -96,7 +103,7 @@ void CObjectCandidateExtraction::extractObjectCandidates(pcl::PointCloud<
 		bool reject = false;
 		unsigned int total_point_cloud_size = total_point_cloud.points.size();
 
-		int chunk = total_point_cloud_size / 4;
+//		int chunk = total_point_cloud_size / 4;
 		omp_set_num_threads(4);
 #pragma omp parallel shared (total_point_cloud,chunk) private(j)
 		{
@@ -108,12 +115,13 @@ void CObjectCandidateExtraction::extractObjectCandidates(pcl::PointCloud<
 						&& total_point_cloud.points[j].z
 								> (toolBox.getNearestNeighborPlane(
 										hierarchyPlanes[indexMaxPointsClusteredPlane],
-										total_point_cloud.points[j]).z+THRESHOLD_POINT_ABOVE_LOWER_PLANE))
-				//(dZmax		+ THRESHOLD_POINT_ABOVE_LOWER_PLANE))//(dZmax+THRESHOLD_POINT_ABOVE_LOWER_PLANE)) //dZmax //dZmax-(dZmax*0.005)) //(((dZmax+dZmin)/2)+dZmax)/2)
+										total_point_cloud.points[j]).z + this->threshold_point_above_lower_plane))
+				//(dZmax		+ this->threshold_point_above_lower_plane))//(dZmax+this->threshold_point_above_lower_plane)) //dZmax //dZmax-(dZmax*0.005)) //(((dZmax+dZmin)/2)+dZmax)/2)
 				{
 					reject = false;
 					for (unsigned int iterUpperPlanes = 0; iterUpperPlanes
 							< hierarchyPlanes[indexMaxPointsClusteredPlane].upperPlanarSurfaces.size(); iterUpperPlanes++) {
+						/*
 						if (toolBox.pointInsideConvexHull2d(
 								hierarchyPlanes[indexMaxPointsClusteredPlane].upperPlanarSurfaces[iterUpperPlanes].convexHull,
 								total_point_cloud.points[j])
@@ -123,7 +131,7 @@ void CObjectCandidateExtraction::extractObjectCandidates(pcl::PointCloud<
 						{
 							reject = true;
 							break;
-						}
+						}*/
 					}
 
 					if (!reject) {
@@ -138,7 +146,7 @@ void CObjectCandidateExtraction::extractObjectCandidates(pcl::PointCloud<
 		cloud_objects.height = 1;
 		//---------------------------------------------
 
-		ROS_DEBUG ("[%s/extractObjectCandidates] Number of object point candidates: %d.",this->nodeName.c_str(), (int)cloud_objects.points.size());
+		ROS_DEBUG ("[extractObjectCandidates] Number of object point candidates: %d.", (int)cloud_objects.points.size());
 
 		if ((unsigned int) cloud_objects.points.size() > 0) {
 			//Cluster objects
@@ -150,7 +158,7 @@ void CObjectCandidateExtraction::extractObjectCandidates(pcl::PointCloud<
 			euclideanClusterExtractor.setMinClusterSize(30);
 			euclideanClusterExtractor.extract(clusteredObjectIndices);
 
-			ROS_DEBUG ("[%s/extractObjectCandidates] Number of objects clustered: %d", this->nodeName.c_str(),(int)clusteredObjectIndices.size());
+			ROS_DEBUG ("[extractObjectCandidates] Number of objects clustered: %d",(int)clusteredObjectIndices.size());
 
 			///clusteredObjects.resize((int)clusteredObjectIndices.size());
 
@@ -165,8 +173,8 @@ void CObjectCandidateExtraction::extractObjectCandidates(pcl::PointCloud<
 				if (!toolBox.isObjectPlane(
 						hierarchyPlanes[indexMaxPointsClusteredPlane],
 						foundObject, IS_PLANE_OBJECT__OBJECT_HEIGHT_THRESHOLD,
-						IS_PLANE_OBJECT__OBJECT_PLANE_HEIGHT_DIFFERENCE) && foundObject.points.size()>MIN_OBJECT_POINT_SIZE) {
-					ROS_DEBUG("[%s/extractObjectCandidates] Object(%d) added",this->nodeName.c_str(),iterCluster);
+						IS_PLANE_OBJECT__OBJECT_PLANE_HEIGHT_DIFFERENCE) && foundObject.points.size()>this->min_points_per_objects) {
+					ROS_DEBUG("[extractObjectCandidates] Object(%d) added",iterCluster);
 					/*
 					 pcl::ConvexHull2D<pcl::PointXYZRGBNormal,
 					 pcl::PointXYZRGBNormal> convexHullExtractor;
@@ -257,11 +265,11 @@ void CObjectCandidateExtraction::extractObjectCandidates(pcl::PointCloud<
 			////
 		}
 		finish2 = ros::Time::now();
-		ROS_DEBUG("[%s/extractObjectCandidates] %d. plane computed - (%lf)",this->nodeName.c_str(),indexMaxPointsClusteredPlane ,(finish2.toSec() - start2.toSec() ));
+		ROS_DEBUG("[extractObjectCandidates] %d. plane computed - (%lf)",indexMaxPointsClusteredPlane ,(finish2.toSec() - start2.toSec() ));
 	}
 	//clusteredObjectsInput = clusteredObjects;
 	finish = ros::Time::now();
-	ROS_INFO("[%s/extractObjectCandidates] Execution time = %lf",this->nodeName.c_str(),(finish.toSec() - start.toSec() ));
+	ROS_DEBUG("[extractObjectCandidates] Execution time = %lf",(finish.toSec() - start.toSec() ));
 }
 
 void CObjectCandidateExtraction::setDistance(float fDistance) {
@@ -272,7 +280,7 @@ void CObjectCandidateExtraction::saveClusteredObjects(std::string filename) {
 	if (this->clusteredObjectsRGB.points.size() > 0) {
 		pcl::io::savePCDFileASCII(filename, this->clusteredObjectsRGB);
 	} else {
-		ROS_WARN("[%s/saveClusteredObjects] nothing to save!",this->nodeName.c_str());
+		ROS_WARN("[saveClusteredObjects] nothing to save!");
 	}
 }
 

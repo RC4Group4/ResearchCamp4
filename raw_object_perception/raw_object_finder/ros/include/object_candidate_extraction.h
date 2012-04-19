@@ -23,10 +23,8 @@
 #include "pcl/segmentation/extract_polygonal_prism_data.h"
 
 #include "sensor_msgs/Image.h"
-#include "image_transport/image_transport.h"
 #include "sensor_msgs/PointCloud.h"
 #include "sensor_msgs/PointCloud2.h"
-//#include "/opt/ros/cturtle/stacks/vision_opencv/cv_bridge/include/cv_bridge/CvBridge.h"
 
 #include "pcl/ModelCoefficients.h"
 #include "pcl/io/pcd_io.h"
@@ -40,9 +38,8 @@
 #include "pcl/common/common_headers.h"
 #include "pcl/range_image/range_image.h"
 
-#include "StructPlanarSurface.h" //since we need the structPlanarSurface
-#include "CToolBoxROS.h"
-#include "CPlaneExtraction.h"
+#include "toolbox_ros.h"
+#include "plane_extraction.h"
 
 #include <iostream>
 #include <cstdlib>
@@ -55,7 +52,7 @@
 
 #include <string>
 
-#include "StructPlanarSurface.h" //since we need the structPlanarSurface
+#include "struct_planar_surface.h" //since we need the structPlanarSurface
 
 //#define EIGEN_DONT_ALIGN_STATICALLY
 
@@ -66,6 +63,9 @@ private:
 	CToolBoxROS toolBox;
 	CPlaneExtraction horizontalSurfaceExtractor;
 	std::string nodeName;
+	ros::NodeHandle nh;
+	double threshold_point_above_lower_plane;
+	int min_points_per_objects;
 
 	float fDistance; /*max distance from camera*/
 	float dZAxisOffSet; /*distance(height) to compensate difference between object and plane*/
@@ -76,7 +76,7 @@ private:
 public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 	CObjectCandidateExtraction();
-	CObjectCandidateExtraction(std::string nodeName, float fDistance);
+	CObjectCandidateExtraction(ros::NodeHandle &nh, std::string nodeName, float fDistance);
 	void extractObjectCandidates(
 			pcl::PointCloud<pcl::PointXYZRGB> &point_cloud, pcl::PointCloud<
 					pcl::PointXYZRGBNormal> &planar_point_cloud, std::vector<

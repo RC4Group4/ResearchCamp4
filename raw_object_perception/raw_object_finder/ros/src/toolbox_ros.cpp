@@ -5,7 +5,7 @@
  *      Author: Christian Mueller
  */
 
-#include "CToolBoxROS.h"
+#include "toolbox_ros.h"
 
 double CToolBoxROS::euclDistanceBtwPoints(pcl::PointXYZ p1, pcl::PointXYZ p2)
 {
@@ -358,7 +358,7 @@ bool CToolBoxROS::transformPointCloud(tf::TransformListener &tfListener,
 		const sensor_msgs::PointCloud2 &srcPointCloud,
 		sensor_msgs::PointCloud2 &transformedPointCloud) {
 
-	bool setup_tf = true;
+	//bool setup_tf = true;
 	bool success_tf = false;
 	tf::StampedTransform transform;
 
@@ -866,7 +866,7 @@ bool CToolBoxROS::distanceBetweenPlane2d(structPlanarSurface &surface1,
 	//ROS_INFO("[ToolBox]DistanceBetweenPlane2d started...");
 	ros::Time start, finish;
 	start = ros::Time::now();
-	float distance;
+	//float distance;
 	float minDistance = 5; //since 5m is max range of kinect, however ToDo limit.h
 	structPlanarSurface surfaceLarger;
 	structPlanarSurface surfaceSmaller;
@@ -919,7 +919,7 @@ bool CToolBoxROS::isObjectPlane(structPlanarSurface &surface, pcl::PointCloud<
 			zMaxObject = object.points[iter_point].z;
 	}
 
-	ROS_WARN("object height %f/%f ; diff %f/%f  ",fabs(zMaxObject-zMinObject),objectHeightThreshold,(zMinObject - surface.plane_height),objectPlaneHeightDifferenceThreshold);
+	//ROS_WARN("object height %f/%f ; diff %f/%f  ",fabs(zMaxObject-zMinObject),objectHeightThreshold,(zMinObject - surface.plane_height),objectPlaneHeightDifferenceThreshold);
 
 	//Todo here we just look at "flying" objects, this is true for many cases, but what about flying labels of transparent bottles? They are still objects. in that case they are neglected!!
 	//if(fabs(zMaxObject-zMinObject) > objectHeightThreshold)
