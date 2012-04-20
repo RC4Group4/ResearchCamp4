@@ -2,6 +2,7 @@
 .cproject
 *.pyc
 *.so
+*.cmake
 bin/
 build/
 .pydevproject
