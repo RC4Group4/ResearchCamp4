@@ -1,0 +1,3 @@
+UBSYSTEM=="tty", SYSFS{modalias}=="usb:v15D1p0000d0100dc02dsc00dp00ic02isc02ip01" KERNEL=="ttyACM*", ID=="3-2:1.0", SYMLINK+="youbot/hokuyo_front"
+
+UBSYSTEM=="tty", SYSFS{modalias}=="usb:v15D1p0000d0100dc02dsc00dp00ic02isc02ip01" KERNEL=="ttyACM*", ID=="3-1:1.0", SYMLINK+="youbot/hokuyo_rear"
