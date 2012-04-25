@@ -5,3 +5,7 @@
 bin/
 build/
 /.pydevproject
+/raw_navigation_new/nbproject/private/
+cmake_install.cmake
+.metadata
+.pydevproject
