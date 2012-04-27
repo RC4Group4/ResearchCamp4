@@ -53,13 +53,12 @@
     </frames>
   </rendering:gui>
 
-
   <rendering:ogre>
     <ambient>1.0 1.0 1.0 1.0</ambient>
     <sky>
       <material>Gazebo/CloudySky</material>
     </sky>
-    <grid>false</grid>
+    <grid>true</grid>
     <maxUpdateRate>10</maxUpdateRate>
     <!--shadowTechnique>none</shadowTechnique-->
     <!--shadows>false</shadows-->
@@ -79,7 +78,7 @@
         <normal>0 0 1</normal>
         <size>30.0 30.0</size>
         <!-- map3.png -->
-        <material>IPA/Grey2</material>
+        <material>Gazebo/Black</material>
       </geom:plane>
     </body:plane>
   </model:physical>

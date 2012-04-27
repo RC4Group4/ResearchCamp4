@@ -2,12 +2,14 @@
 <launch>
 
 <!-- start gazebo with empty world -->
-<include file="$(find raw_gazebo_worlds)/ros/launch/empty-world.launch" />
+ <include file="$(find raw_gazebo_worlds)/ros/launch/empty-world.launch" /> 
+
+	<!-- <node name="gazebo" pkg="gazebo" type="gazebo" args="$(find gazebo_worlds)/worlds/empty.world" respawn="false" output="screen" />	-->
 
 <!-- send world urdf to param server -->
-<param name="world_description" command="$(find xacro)/xacro.py $(find raw_gazebo_worlds)/common/worlds/$(env ROBOT_ENV).urdf" />
+<param name="arena_description" command="$(find xacro)/xacro.py $(find raw_gazebo_worlds)/common/worlds/$(env ROBOT_ENV).urdf" />
 
 <!-- push world_description to factory and spawn robot in gazebo -->
-<node name="spawn_urdf_world" pkg="gazebo" type="spawn_model" args="-urdf -param world_description -x 0 -y 0 -z 0.01 -R 0.0 -P 0.0 -Y 0 -model urdf_world_model" respawn="false" output="screen" />
-
+<!-- <node name="spawn_urdf_world" pkg="gazebo" type="spawn_model" args="-urdf -param world_description -x 0 -y 0 -z 0.01 -R 0.0 -P 0.0 -Y 0 -model urdf_world_model" respawn="false" output="screen" /> -->
+<node name="arena_gazebo_model" pkg="gazebo" type="spawn_model" args="-urdf -param arena_description -model arena -x 0.0 -y 0.0 -z 0.2" respawn="false" output="screen" />
 </launch>
