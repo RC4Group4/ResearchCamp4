@@ -6,7 +6,6 @@
  <node name="gazebo" pkg="gazebo" type="gazebo" args="$(find gazebo_worlds)/worlds/empty.world" respawn="false" output="screen" >
 	 <env name="GAZEBO_RESOURCE_PATH" value="$(find youbot_description):$(find gazebo_worlds):$(find gazebo)/gazebo/share/gazebo" />
 		<remap from="base_controller/command" to="cmd_vel"/>
-		<remap from="scan_front" to="base_scan"/>
                 <remap from="/base_odometry/odom" to="/odom" />
 		
  </node>
