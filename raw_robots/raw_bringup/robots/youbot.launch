@@ -15,7 +15,7 @@
 	<group>
 		<machine name="pc2" address="youbot-pc2" default="true"/>
 	
-		<!-- add kinect launch file -->
-		<!-- add perception components -->
+		<!-- asus or kinect camera -->
+		<include file="$(find raw_bringup)/components/cam3d.launch" />
 	</group>
 </launch>
