@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
 	<group>
-		<machine name="pc1" address="youbot-pc1" default="true"/>
+		<machine name="pc1" address="youbot-hbrs2-pc1" default="true"/>
 	
 		<include file="$(find youbot_oodl)/launch/youbot_oodl_driver.launch" />
 		<include file="$(find youbot_oodl)/launch/youbot_joint_state_publisher.launch" />
@@ -13,7 +13,7 @@
 	</group>
 
 	<group>
-		<machine name="pc2" address="youbot-pc2" default="true"/>
+		<machine name="pc2" address="youbot-hbrs2-pc2" default="true"/>
 	
 		<!-- asus or kinect camera -->
 		<include file="$(find raw_bringup)/components/cam3d.launch" />
