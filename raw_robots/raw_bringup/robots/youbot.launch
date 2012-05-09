@@ -3,8 +3,8 @@
 	<group>
 		<machine name="pc1" address="youbot-hbrs2-pc1" default="true"/>
 	
-		<include file="$(find youbot_oodl)/launch/youbot_oodl_driver.launch" />
-		<include file="$(find youbot_oodl)/launch/youbot_joint_state_publisher.launch" />
+		<include file="$(find raw_bringup)/robots/youbot_oodl_driver.launch" />
+		<include file="$(find raw_bringup)/robots/youbot_joint_state_publisher.launch" />
 
 		<include file="$(find raw_bringup)/components/base_front_hokuyo_node.launch" />
 		<include file="$(find raw_bringup)/components/base_rear_hokuyo_node.launch" />
