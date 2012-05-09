@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<launch>
+	<!-- openni camera node -->
+	<include file="$(find openni_camera)/launch/openni_node.launch"/>
+</launch>

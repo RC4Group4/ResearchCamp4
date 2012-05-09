@@ -12,6 +12,7 @@
 
 	<!-- launch move_base node -->
 	<include file="$(find raw_2dnav)/ros/launch/move_base.launch" />
+        <include file="$(find raw_2dnav)/ros/launch/ekf.launch" />
 <!--
 	<node pkg="robot_pose_ekf" type="robot_pose_ekf" name="robot_pose_ekf" output="screen">
 		<param name="freq" value="30.0"/>
