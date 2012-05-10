@@ -1,0 +1,14 @@
+<package>
+  <description brief="raw_description">
+
+     raw_description
+
+  </description>
+  <author>fred</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/raw_description</url>
+
+</package>
+
+
