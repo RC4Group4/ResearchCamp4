@@ -5,7 +5,7 @@
        xmlns:xacro="http://ros.org/wiki/xacro">
 
 
-  <include filename="$(find youbot_description)/urdf/sensors/kinect.urdf.xacro" />
+  <include filename="$(find raw_description)/urdf/sensors/kinect.urdf.xacro" />
 
   <property name="height" value="0.52" />
   <property name="width" value="0.03" />
@@ -47,4 +47,4 @@
     <origin xyz="0 0 ${height}" rpy="0 0 0" />
   </xacro:kinect>
 
-</robot>
+</root>

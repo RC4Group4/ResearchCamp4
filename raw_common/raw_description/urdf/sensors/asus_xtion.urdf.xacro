@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
-<robot xmlns:xacro="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface">
+<root xmlns:xacro="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface">
   
-  <include filename="$(find youbot_description)/urdf/sensors/asus_xtion.gazebo.xacro" />
+  <include filename="$(find raw_description)/urdf/sensors/asus_xtion.gazebo.xacro" />
   
   <property name="eye_radius" value="0.0095" />
   <property name="eye_length" value="0.002" />
@@ -153,4 +153,4 @@
 
   </xacro:macro>
 
-</robot>
+</root>

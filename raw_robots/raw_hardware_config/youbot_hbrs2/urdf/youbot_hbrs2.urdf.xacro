@@ -28,7 +28,7 @@
   <include filename="$(find youbot_description)/urdf/materials.urdf.xacro" />
 
   <!-- additional sensors and other stuff -->
-  <include filename="$(find youbot_description)/urdf/cam3d_tower.urdf.xacro" />
+  <include filename="$(find raw_description)/urdf/tower/cam3d_tower.urdf.xacro" />
   <!--include filename="$(find youbot_description)/urdf/sensors/asus_xtion.urdf.xacro" />-->
 				     
 
