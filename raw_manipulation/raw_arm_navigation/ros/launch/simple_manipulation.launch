@@ -1,11 +1,12 @@
 <?xml version="1.0"?>
 <launch>
-	<include file="$(find raw_arm_navigation)/ros/launch/upload_arm_parameter.launch"/>
-
-	<include file="$(find youbot_arm_navigation)/ros/launch/constraint_aware_kinematics.launch" />
-
+<!--
+	<include file="$(find youbot_arm_navigation)/ros/launch/planning_environment.launch" />
+-->
 	<include file="$(find youbot_arm_navigation)/ros/launch/environment_server.launch">
 		<arg name="use_monitor" value="true" />
 		<arg name="use_collision_map" value="false" />
 	</include>
+
+	<include file="$(find youbot_arm_navigation)/ros/launch/constraint_aware_kinematics.launch" />
 </launch>

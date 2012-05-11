@@ -1,11 +1,13 @@
 #!/usr/bin/env python
-import roslib; roslib.load_manifest('raw_arm_navugation')
+import roslib; roslib.load_manifest('raw_arm_navigation')
 
 import rospy
 import sensor_msgs.msg
 import actionlib
 import brics_actuator.msg
-import control_msgs.msg
+import raw_arm_navigation.msg
+
+from simple_ik_solver_wrapper import SimpleIkSolver
 
 
 class ArmMoveSimpleActionServer:
@@ -13,19 +15,19 @@ class ArmMoveSimpleActionServer:
 		self.received_state = False
 		
 		### get parameters
-		if (not rospy.has_param("arm_move_simple_action_server/unit")):
+		if (not rospy.has_param("unit")):
 			rospy.logerr("No unit given.")
 			exit(0)
 		
-		if (not rospy.has_param("arm_move_simple_action_server/joints")):
+		if (not rospy.has_param("joints")):
 			rospy.logerr("No joints given.")
 			exit(0)
 		
-		self.joint_names = rospy.get_param("arm_move_simple_action_server/joints")
+		self.joint_names = rospy.get_param("joints")
 		rospy.loginfo("Joints: %s", self.joint_names)
 		self.current_joint_configuration = [0 for i in range(len(self.joint_names))]
 		
-		self.unit = rospy.get_param("arm_move_simple_action_server/unit")
+		self.unit = rospy.get_param("unit")
 		rospy.loginfo("Unit: %s", self.unit)
 		
 		# subscriptions
