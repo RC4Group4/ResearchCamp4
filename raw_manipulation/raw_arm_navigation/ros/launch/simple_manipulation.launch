@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
 <launch>
+	<include file="$(find raw_arm_navigation)/ros/launch/upload_arm_parameter.launch"/>
+
 	<include file="$(find youbot_arm_navigation)/ros/launch/constraint_aware_kinematics.launch" />
 
 	<include file="$(find youbot_arm_navigation)/ros/launch/environment_server.launch">
