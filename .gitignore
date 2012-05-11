@@ -7,3 +7,5 @@ bin/
 build/
 .pydevproject
 *.*~
+msg_gen
+srv_gen
