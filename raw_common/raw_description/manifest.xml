@@ -9,6 +9,8 @@
   <review status="unreviewed" notes=""/>
   <url>http://ros.org/wiki/raw_description</url>
 
+  <depend package="youbot_description" />
+
 </package>
 
 
