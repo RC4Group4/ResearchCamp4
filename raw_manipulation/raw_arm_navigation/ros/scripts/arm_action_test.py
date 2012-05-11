@@ -5,6 +5,7 @@ import raw_arm_navigation.msg
 import actionlib
 import sys
 
+
 def arm_action_test():
 	client = actionlib.SimpleActionClient('MoveToJointConfigurationDirect', raw_arm_navigation.msg.MoveToJointConfigurationAction)
 	client.wait_for_server()
