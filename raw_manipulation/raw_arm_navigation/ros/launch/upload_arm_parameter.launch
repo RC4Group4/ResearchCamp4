@@ -1,4 +1,4 @@
 <?xml version="1.0"?>
 <launch>
-	<rosparam file="$(find raw_arm_navigation)/ros/config/arm_joint_trajectory_action.yaml" command="load" ns="arm_1" />
+	<rosparam file="$(find raw_arm_navigation)/ros/config/arm_parameters.yaml" command="load" ns="arm_1" />
 </launch>

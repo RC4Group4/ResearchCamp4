@@ -1,5 +1,4 @@
 arm_controller:
-  joint_trajectory_action:
     unit: rad
     joints:
       - arm_joint_1

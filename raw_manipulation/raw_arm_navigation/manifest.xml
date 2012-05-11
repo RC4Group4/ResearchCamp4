@@ -9,6 +9,13 @@
   <review status="unreviewed" notes=""/>
   <url>http://ros.org/wiki/raw_arm_navigation</url>
 
+  <depend package="rospy" />
+  <depend package="sensor_msgs" />
+  <depend package="actionlib" />
+  <depend package="brics_actuator" />
+  <depend package="arm_navigation_msgs" />
+  <depend package="kinematics_msgs" />
+  
 </package>
 
 
