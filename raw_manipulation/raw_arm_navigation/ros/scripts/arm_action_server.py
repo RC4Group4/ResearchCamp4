@@ -6,6 +6,8 @@ import sensor_msgs.msg
 import actionlib
 import brics_actuator.msg
 import raw_arm_navigation.msg
+import arm_navigation_msgs.msg
+import tf
 
 from simple_ik_solver_wrapper import SimpleIkSolver
 
@@ -41,7 +43,7 @@ class ArmMoveSimpleActionServer:
 		self.as_move_joint_direct = actionlib.SimpleActionServer("MoveToJointConfigurationDirect", raw_arm_navigation.msg.MoveToJointConfigurationAction, execute_cb = self.execute_cb_move_joint_config_direct)
 	
 		# additional classes
-		iks = SimpleIkSolver()
+		self.iks = SimpleIkSolver()
 	
 	
 	def joint_states_callback(self, msg):
@@ -50,44 +52,56 @@ class ArmMoveSimpleActionServer:
 				if (msg.name[i] == self.joint_names[k]):
 					self.current_joint_configuration[k] = msg.position[i]
 					
-		
+		#print 'joint states received'
 		self.received_state = True
 		
 	
 	def execute_cb_move_joint_config_direct(self, action_msgs):
 
+		print 'publish data'
 		self.pub_joint_positions.publish(action_msgs.goal)
-			
+		
+		print 'wait for reaching goal'
 		#wait to reach the goal position
 		while (not rospy.is_shutdown()):
 			if (self.is_goal_reached(action_msgs.goal)):
 				break
 			
-		result = arm_navigation_msgs.msg.ArmNavigationErrorCodes()
+		print 'goal reached'
+			
+		result = raw_arm_navigation.msg.MoveToJointConfigurationResult()
+		result.result.val = arm_navigation_msgs.msg.ArmNavigationErrorCodes.SUCCESS
 		
-		result.val = arm_navigation_msgs.msg.ArmNavigationErrorCodes.SUCCESS
-		
+		print 'return success'
 		self.as_move_joint_direct.set_succeeded(result)
 
 
 	def execute_cb_move_cartesian_direct(self, action_msgs):
 	
+		print 'pose transform'
 		x = action_msgs.goal.pose.position.x
 		y = action_msgs.goal.pose.position.y
 		z = action_msgs.goal.pose.position.z
 	
-		(roll, pitch, jaw) = tf.transformations.euler_from_quaternion(action_msgs.goal.pose.orientation.x, 
+		(roll, pitch, yaw) = tf.transformations.euler_from_quaternion([action_msgs.goal.pose.orientation.x, 
 																	action_msgs.goal.pose.orientation.y,
 																	action_msgs.goal.pose.orientation.z,
-																	action_msgs.goal.pose.orientation.w)
+																	action_msgs.goal.pose.orientation.w])
 	
+		print 'create pose'
 		pose = self.iks.create_pose(x, y, z, roll, pitch, yaw)
+
+		print pose
 		
+		print 'get ik solution'
 		joint_config = self.iks.call_constraint_aware_ik_solver(pose)
 		
-		result = arm_navigation_msgs.msg.ArmNavigationErrorCodes()
-		
+		print joint_config
+				
+		result = raw_arm_navigation.msg.MoveToCartesianPoseResult()
+				
 		if (joint_config):
+			print 'solution found'
 			jp = brics_actuator.msg.JointPositions()
 			
 			for i in range(5):
@@ -103,19 +117,23 @@ class ArmMoveSimpleActionServer:
 			while (not rospy.is_shutdown()):
 				if (self.is_goal_reached(jp)):
 					break
-				
-			result.val = arm_navigation_msgs.msg.ArmNavigationErrorCodes.SUCCESS
-			self.as_move_joint_direct.set_succeeded(result)
+			
+			result.result.val = arm_navigation_msgs.msg.ArmNavigationErrorCodes.SUCCESS
+			self.as_move_cart_direct.set_succeeded(result)
 		
 		else:
-			result.val = arm_navigation_msgs.msg.ArmNavigationErrorCodes.NO_IK_SOLUTION
-			self.as_move_joint_direct.set_aborted(result)
+			print 'no solution found'
+			result.result.val = arm_navigation_msgs.msg.ArmNavigationErrorCodes.NO_IK_SOLUTION
+			self.as_move_cart_direct.set_aborted(result)
 				
 		
 	def is_goal_reached(self, goal_pose):
 		for i in range(len(self.joint_names)):
-			if (abs(goal_pose.position[i] - self.configuration[i]) > 0.05):
+			if (abs(goal_pose.positions[i].value - self.current_joint_configuration[i]) > 0.05):
+				print 'GOAL NOT REACHED ###########################'
 				return False
+					
+		print 'GOAL REACHED ###########################'
 		return True
 
 
