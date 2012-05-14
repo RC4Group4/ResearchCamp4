@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-	<rosparam command="load" ns="/script_server/base" file="$(find raw_default_env_config)/$(env ROBOT_ENV)/navigation_goals.yaml"/>	
+	<include file="$(find raw_default_env_config)/upload_param.launch" />
 
 	<arg name="map" default="$(find raw_default_env_config)/$(env ROBOT_ENV)/map.yaml" />
 
