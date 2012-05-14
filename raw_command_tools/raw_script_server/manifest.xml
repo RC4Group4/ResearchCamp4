@@ -8,6 +8,8 @@
   <license>BSD</license>
   <review status="unreviewed" notes=""/>
   <url>http://ros.org/wiki/raw_script_server</url>
+  
+  <depend package="raw_arm_navigation" />
 
 </package>
 
