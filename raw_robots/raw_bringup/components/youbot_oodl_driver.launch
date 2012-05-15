@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-<launch>
-	<node name="youbot_oodl_driver" pkg="youbot_oodl" type="youbot_oodl" output="screen">
-		<remap from="base/joint_states" to="/joint_states"/>
-		<remap from="arm_1/joint_states" to="/joint_states"/>
-	</node>
-</launch>

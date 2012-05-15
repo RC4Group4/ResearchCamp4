@@ -1,8 +1,5 @@
 <?xml version="1.0"?>
 <launch>
-	<param name="youBotHasBase" type="bool" value="true"/>
-	<param name="youBotHasArm" type="bool" value="true"/> 
-
 	<include file="$(find raw_gazebo_worlds)/ros/launch/$(env ROBOT_ENV).launch" />
 
 	<param name="robot_description" command="$(find xacro)/xacro.py '$(find raw_hardware_config)/$(env ROBOT)/urdf/$(env ROBOT).urdf.xacro'"/>
@@ -16,4 +13,7 @@
 	<include file="$(find raw_bringup)/components/arm.launch" />	
 	
 	<include file="$(find raw_teleop)/ros/launch/teleop_joypad.launch" />
+
+
+	
 </launch>
