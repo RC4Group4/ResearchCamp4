@@ -12,7 +12,7 @@ import tf
 from simple_ik_solver_wrapper import SimpleIkSolver
 
 
-class ArmMoveSimpleActionServer:
+class ArmActionServer:
 	def __init__(self):
 		self.received_state = False
 					
@@ -57,7 +57,6 @@ class ArmMoveSimpleActionServer:
 		self.pub_joint_positions.publish(action_msgs.goal)
 		
 		#wait to reach the goal position
-		rospy.loginfo("move arm to joint configuration")
 		while (not rospy.is_shutdown()):
 			if (self.is_goal_reached(action_msgs.goal)):
 				break
@@ -114,9 +113,9 @@ class ArmMoveSimpleActionServer:
 
 
 if __name__ == "__main__":
-	rospy.init_node("arm_move_simple_action_server")
+	rospy.init_node("arm_action_server")
 	
-	action = ArmMoveSimpleActionServer()
+	action = ArmActionServer()
 	
 	rospy.loginfo("arm action server started")
 	
