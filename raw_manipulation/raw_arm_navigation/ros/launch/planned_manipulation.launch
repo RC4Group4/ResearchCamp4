@@ -2,5 +2,7 @@
 <launch>
 	<include file="$(find youbot_joint_trajectory_action)/ros/launch/youbot_joint_trajectory_action.launch" />
 	<include file="$(find youbot_arm_navigation)/ros/launch/arm_navigation.launch" />
+	
 	<include file="$(find raw_arm_navigation)/ros/launch/arm_action_server.launch" />
+	<include file="$(find raw_arm_navigation)/ros/launch/gripper_action_server.launch" />
 </launch>
