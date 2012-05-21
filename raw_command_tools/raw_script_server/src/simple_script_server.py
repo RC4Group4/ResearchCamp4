@@ -12,9 +12,9 @@ import roslib
 roslib.load_manifest('raw_script_server')
 import rospy
 import actionlib
+import tf
 
 # msg imports
-from tf.transformations import *
 from raw_arm_navigation.msg import *
 from raw_script_server.msg import *
 from geometry_msgs.msg import *
@@ -101,6 +101,12 @@ class simple_script_server:
 		self.ns_global_prefix = "/script_server"
 		self.wav_path = ""
 		self.parse = parse
+		
+		if (not rospy.has_param("/arm_1/arm_controller/joints")):
+			rospy.logerr("No joints given.")
+			exit(0)
+		else:
+			self.arm1_joint_names = sorted(rospy.get_param("/arm_1/arm_controller/joints"))
 
 #------------------- Move section -------------------#
 	## Deals with all kind of movements for different components.
@@ -333,20 +339,17 @@ class simple_script_server:
 		
 		pose_goal = raw_arm_navigation.msg.MoveToJointConfigurationGoal()
 		
-		#todo read from parameter server     
-		joint_names = ['arm_joint_1','arm_joint_2','arm_joint_3','arm_joint_4','arm_joint_5']
-
-		for i in range(5):
+		for i in range(DOF):
 			jv = brics_actuator.msg.JointValue()
-			jv.joint_uri = joint_names[i]
-			jv.value = 0.0
+			jv.joint_uri = self.arm1_joint_names[i]
+			jv.value = param[i]
 			jv.unit = "rad"
 			pose_goal.goal.positions.append(jv)
 
 		action_server_name = "/arm_1/arm_controller/MoveToJointConfigurationDirect"
 
 		rospy.logdebug("calling %s action server", action_server_name)
-		client = actionlib.SimpleActionClient(action_server_name, MoveBaseAction)
+		client = actionlib.SimpleActionClient(action_server_name, MoveToJointConfigurationAction)
 		# trying to connect to server
 		rospy.logdebug("waiting for %s action server to start", action_server_name)
 		if not client.wait_for_server(rospy.Duration(5)):
@@ -367,7 +370,7 @@ class simple_script_server:
 		return ah
 
 
-	def move_arm_cart(self, component_name, parameter_name=[0, 0, 0, 0, 0, 0], blocking=True):	
+	def move_arm_cart(self, component_name, parameter_name=[0, 0, 0, 0, 0, 0, "/base_link"], blocking=True):	
 		ah = action_handle("move_arm", component_name, parameter_name, blocking, self.parse)
 		if(self.parse):
 			return ah
@@ -392,7 +395,7 @@ class simple_script_server:
 			return ah
 		else:
 			#print i,"type1 = ", type(i)
-			DOF = 6
+			DOF = 7
 			if not len(param) == DOF: # check dimension
 				rospy.logerr("no valid parameter for %s: dimension should be %d and is %d, aborting...", component_name, DOF, len(param))
 				print "parameter is:", param
@@ -401,19 +404,29 @@ class simple_script_server:
 			else:
 				for i in param:
 					#print i,"type2 = ", type(i)
-					if not ((type(i) is float) or (type(i) is int)): # check type
-						#print type(i)
-						rospy.logerr("no valid parameter for %s: not a list of float or int, aborting...", component_name)
-						print "parameter is:", param
-						ah.set_failed(3)
-						return ah
-					else:
-						rospy.logdebug("accepted parameter %f for %s", i, component_name)
+					if i < (DOF - 1):
+						if not ((type(i) is float) or (type(i) is int)): # check type
+							#print type(i)
+							rospy.logerr("no valid parameter for %s: not a list of float or int (1-6), aborting...", component_name)
+							print "parameter is:", param
+							ah.set_failed(3)
+							return ah
+						else:
+							rospy.logdebug("accepted parameter %f for %s", i, component_name)
+					elif i == DOF:
+						if not (type(i) is string): # check type
+							#print type(i)
+							rospy.logerr("no valid parameter for %s: last parameter is not a string, aborting...", component_name)
+							print "parameter is:", param
+							ah.set_failed(3)
+							return ah
+						else:
+							rospy.logdebug("accepted parameter %f for %s", i, component_name)
 
 		# convert to pose message
 		pose = raw_arm_navigation.msg.MoveToCartesianPoseGoal()
-		pose.header.stamp = rospy.Time.now()
-		pose.header.frame_id = "/map"
+		pose.goal.header.stamp = rospy.Time.now()
+		pose.goal.header.frame_id = param[6]
 		
 		pose.goal.pose.position.x = param[0]
 		pose.goal.pose.position.y = param[1]
