@@ -15,22 +15,17 @@ from simple_ik_solver_wrapper import SimpleIkSolver
 class ArmMoveSimpleActionServer:
 	def __init__(self):
 		self.received_state = False
-		
-		### get parameters
-		if (not rospy.has_param("unit")):
-			rospy.logerr("No unit given.")
-			exit(0)
-		
+					
 		if (not rospy.has_param("joints")):
 			rospy.logerr("No joints given.")
 			exit(0)
+		else:
+			self.joint_names = sorted(rospy.get_param("joints"))
+			rospy.loginfo("Joints: %s", self.joint_names)
 		
-		self.joint_names = rospy.get_param("joints")
-		rospy.loginfo("Joints: %s", self.joint_names)
 		self.current_joint_configuration = [0 for i in range(len(self.joint_names))]
 		
-		self.unit = rospy.get_param("unit")
-		rospy.loginfo("Unit: %s", self.unit)
+		self.unit = "rad"
 		
 		# subscriptions
 		rospy.Subscriber("joint_states", sensor_msgs.msg.JointState, self.joint_states_callback)
@@ -50,6 +45,7 @@ class ArmMoveSimpleActionServer:
 		for k in range(len(self.joint_names)):
 			for i in range(len(msg.name)):
 				if (msg.name[i] == self.joint_names[k]):
+					#rospy.loginfo("%s: %f", msg.name[i], msg.position[i])
 					self.current_joint_configuration[k] = msg.position[i]
 					
 		#print 'joint states received'
@@ -57,58 +53,37 @@ class ArmMoveSimpleActionServer:
 		
 	
 	def execute_cb_move_joint_config_direct(self, action_msgs):
-
-		print 'publish data'
+		rospy.loginfo("move arm to joint configuration")
 		self.pub_joint_positions.publish(action_msgs.goal)
 		
-		print 'wait for reaching goal'
 		#wait to reach the goal position
+		rospy.loginfo("move arm to joint configuration")
 		while (not rospy.is_shutdown()):
 			if (self.is_goal_reached(action_msgs.goal)):
 				break
-			
-		print 'goal reached'
-			
+					
 		result = raw_arm_navigation.msg.MoveToJointConfigurationResult()
 		result.result.val = arm_navigation_msgs.msg.ArmNavigationErrorCodes.SUCCESS
 		
-		print 'return success'
 		self.as_move_joint_direct.set_succeeded(result)
 
 
 	def execute_cb_move_cartesian_direct(self, action_msgs):
-	
-		print 'pose transform'
-		x = action_msgs.goal.pose.position.x
-		y = action_msgs.goal.pose.position.y
-		z = action_msgs.goal.pose.position.z
-	
-		(roll, pitch, yaw) = tf.transformations.euler_from_quaternion([action_msgs.goal.pose.orientation.x, 
-																	action_msgs.goal.pose.orientation.y,
-																	action_msgs.goal.pose.orientation.z,
-																	action_msgs.goal.pose.orientation.w])
-	
-		print 'create pose'
-		pose = self.iks.create_pose(x, y, z, roll, pitch, yaw)
-
-		print pose
+		rospy.loginfo("move arm to cartesian pose")
 		
-		print 'get ik solution'
-		joint_config = self.iks.call_constraint_aware_ik_solver(pose)
+		joint_config = self.iks.call_constraint_aware_ik_solver(action_msgs.goal)
 		
-		print joint_config
-				
 		result = raw_arm_navigation.msg.MoveToCartesianPoseResult()
 				
 		if (joint_config):
-			print 'solution found'
+			rospy.loginfo("IK solution found")
 			jp = brics_actuator.msg.JointPositions()
 			
 			for i in range(5):
 				jv = brics_actuator.msg.JointValue()
 				jv.joint_uri = self.iks.joint_names[i]
 				jv.value = joint_config[i]
-				jv.unit = "rad"
+				jv.unit = self.unit
 				jp.positions.append(jv)
 			
 			self.pub_joint_positions.publish(jp)
@@ -122,18 +97,19 @@ class ArmMoveSimpleActionServer:
 			self.as_move_cart_direct.set_succeeded(result)
 		
 		else:
-			print 'no solution found'
+			rospy.logerr("NO IK solution found")
 			result.result.val = arm_navigation_msgs.msg.ArmNavigationErrorCodes.NO_IK_SOLUTION
 			self.as_move_cart_direct.set_aborted(result)
 				
 		
 	def is_goal_reached(self, goal_pose):
 		for i in range(len(self.joint_names)):
-			if (abs(goal_pose.positions[i].value - self.current_joint_configuration[i]) > 0.05):
-				print 'GOAL NOT REACHED ###########################'
+			#rospy.loginfo("joint: %d -> curr_val: %f --- goal_val: %f", i, goal_pose.positions[i].value, self.current_joint_configuration[i])
+			if (abs(goal_pose.positions[i].value - self.current_joint_configuration[i]) > 0.05):   #ToDo: threshold via parameter
 				return False
+		
 					
-		print 'GOAL REACHED ###########################'
+		rospy.loginfo("Goal pose reached")
 		return True
 
 
@@ -141,5 +117,7 @@ if __name__ == "__main__":
 	rospy.init_node("arm_move_simple_action_server")
 	
 	action = ArmMoveSimpleActionServer()
+	
+	rospy.loginfo("arm action server started")
 	
 	rospy.spin()
