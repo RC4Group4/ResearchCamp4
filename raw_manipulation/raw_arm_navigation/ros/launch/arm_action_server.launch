@@ -1,7 +1,5 @@
 <?xml version="1.0"?>
 <launch>
-	<include file="$(find raw_arm_navigation)/ros/launch/upload_arm_parameter.launch"/>
-
 	<group ns="arm_1/arm_controller">
 		<node pkg="raw_arm_navigation" type="arm_action_server.py" name="arm_action_server" output="screen">
 			<remap from="joint_states" to="/joint_states" />

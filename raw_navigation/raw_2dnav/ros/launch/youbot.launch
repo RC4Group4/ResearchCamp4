@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
 	<group>
-		<machine name="pc1" address="youbot-pc1" default="true"/>
+		<machine name="pc1" address="youbot-hbrs2-pc1" default="true"/>
 	
 		<include file="$(find youbot_oodl)/launch/youbot_oodl_driver.launch" />
 		<include file="$(find youbot_oodl)/launch/youbot_joint_state_publisher.launch" />

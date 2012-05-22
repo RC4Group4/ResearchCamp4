@@ -17,8 +17,13 @@ import brics_actuator.msg
 class SimpleIkSolver:
 
 	def __init__(self):
-		self.joint_names = ["arm_joint_1", "arm_joint_2", "arm_joint_3", "arm_joint_4", "arm_joint_5"]
-		self.configuration = [0, 0, 0, 0, 0]
+		if (not rospy.has_param("/arm_1/arm_controller/joints")):
+			rospy.logerr("No joints given.")
+			exit(0)
+		else:
+			self.joint_names = sorted(rospy.get_param("/arm_1/arm_controller/joints"))
+		
+		self.configuration = [0 for i in range(len(self.joint_names))]
 		self.received_state = False
 		
 		rospy.Subscriber('/joint_states', sensor_msgs.msg.JointState, self.joint_states_callback)
@@ -55,6 +60,7 @@ class SimpleIkSolver:
 
 
 	def call_constraint_aware_ik_solver(self, goal_pose):
+				
 		while (not self.received_state):
 			time.sleep(0.1)
 		req = kinematics_msgs.srv.GetConstraintAwarePositionIKRequest()
@@ -64,6 +70,7 @@ class SimpleIkSolver:
 		req.ik_request.ik_seed_state.joint_state.position = self.configuration
 		req.ik_request.pose_stamped = goal_pose
 		try:
+			rospy.loginfo("call inverse kinematics solver service")
 			resp = self.ciks(req)
 		except rospy.ServiceException, e:
 			rospy.logerr("Service did not process request: %s", str(e))
@@ -72,19 +79,3 @@ class SimpleIkSolver:
 			return resp.solution.joint_state.position
 		else:
 			return None
-
-
-	def create_pose(self, x, y, z, roll, pitch, yaw):
-		pose = geometry_msgs.msg.PoseStamped()
-		pose.pose.position.x = x
-		pose.pose.position.y = y
-		pose.pose.position.z = z
-		quat = tf.transformations.quaternion_from_euler(roll, pitch, yaw)
-		pose.pose.orientation.x = quat[0]
-		pose.pose.orientation.y = quat[1]
-		pose.pose.orientation.z = quat[2]
-		pose.pose.orientation.w = quat[3]
-		pose.header.frame_id = "/arm_link_0"
-		pose.header.stamp = rospy.Time.now()
-		
-		return pose

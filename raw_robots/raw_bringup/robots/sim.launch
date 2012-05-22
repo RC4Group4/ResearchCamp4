@@ -10,6 +10,7 @@
 	<rosparam file="$(find raw_description)/controller/base_odometry.yaml" command="load" />
 
 	<include file="$(find youbot_description)/launch/control/youbot_arm_control.launch" />
+	<include file="$(find youbot_description)/launch/control/youbot_gripper_control.launch" />
 	<include file="$(find raw_bringup)/components/arm.launch" />	
 	
 	<include file="$(find raw_teleop)/ros/launch/teleop_joypad.launch" />

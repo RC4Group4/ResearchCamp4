@@ -1,4 +1,4 @@
-/src
+/src/raw_script_server
 /msg/StateAction*.msg
 /msg/StateFeedback.msg
 /msg/StateResult.msg
