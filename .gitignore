@@ -8,4 +8,5 @@ build/
 .pydevproject
 .metadata
 *.*~
-
+msg_gen
+srv_gen
