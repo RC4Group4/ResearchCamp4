@@ -9,10 +9,8 @@ import raw_arm_navigation.msg
 import arm_navigation_msgs.msg
 import tf
 
-from simple_ik_solver_wrapper import SimpleIkSolver
 
-
-class ArmActionServer:
+class GripperActionServer:
 	def __init__(self):
 		self.received_state = False
 					
@@ -25,7 +23,7 @@ class ArmActionServer:
 		
 		self.current_joint_configuration = [0 for i in range(len(self.joint_names))]
 		
-		self.unit = "rad"
+		self.unit = "m"
 		
 		# subscriptions
 		rospy.Subscriber("joint_states", sensor_msgs.msg.JointState, self.joint_states_callback)
@@ -34,12 +32,7 @@ class ArmActionServer:
 		self.pub_joint_positions = rospy.Publisher("position_command", brics_actuator.msg.JointPositions)
 		
 		# action server
-		self.as_move_cart_direct = actionlib.SimpleActionServer("MoveToCartesianPoseDirect", raw_arm_navigation.msg.MoveToCartesianPoseAction, execute_cb = self.execute_cb_move_cartesian_direct)
 		self.as_move_joint_direct = actionlib.SimpleActionServer("MoveToJointConfigurationDirect", raw_arm_navigation.msg.MoveToJointConfigurationAction, execute_cb = self.execute_cb_move_joint_config_direct)
-	
-		# additional classes
-		self.iks = SimpleIkSolver()
-	
 	
 	def joint_states_callback(self, msg):
 		for k in range(len(self.joint_names)):
@@ -53,7 +46,7 @@ class ArmActionServer:
 		
 	
 	def execute_cb_move_joint_config_direct(self, action_msgs):
-		rospy.loginfo("move arm to joint configuration")
+		rospy.loginfo("move gripper to joint configuration")
 		self.pub_joint_positions.publish(action_msgs.goal)
 		
 		#wait to reach the goal position
@@ -65,46 +58,12 @@ class ArmActionServer:
 		result.result.val = arm_navigation_msgs.msg.ArmNavigationErrorCodes.SUCCESS
 		
 		self.as_move_joint_direct.set_succeeded(result)
-
-
-	def execute_cb_move_cartesian_direct(self, action_msgs):
-		rospy.loginfo("move arm to cartesian pose")
-		
-		joint_config = self.iks.call_constraint_aware_ik_solver(action_msgs.goal)
-		
-		result = raw_arm_navigation.msg.MoveToCartesianPoseResult()
-				
-		if (joint_config):
-			rospy.loginfo("IK solution found")
-			jp = brics_actuator.msg.JointPositions()
-			
-			for i in range(5):
-				jv = brics_actuator.msg.JointValue()
-				jv.joint_uri = self.iks.joint_names[i]
-				jv.value = joint_config[i]
-				jv.unit = self.unit
-				jp.positions.append(jv)
-			
-			self.pub_joint_positions.publish(jp)
-			
-			#wait to reach the goal position
-			while (not rospy.is_shutdown()):
-				if (self.is_goal_reached(jp)):
-					break
-			
-			result.result.val = arm_navigation_msgs.msg.ArmNavigationErrorCodes.SUCCESS
-			self.as_move_cart_direct.set_succeeded(result)
-		
-		else:
-			rospy.logerr("NO IK solution found")
-			result.result.val = arm_navigation_msgs.msg.ArmNavigationErrorCodes.NO_IK_SOLUTION
-			self.as_move_cart_direct.set_aborted(result)
 				
 		
 	def is_goal_reached(self, goal_pose):
 		for i in range(len(self.joint_names)):
 			#rospy.loginfo("joint: %d -> curr_val: %f --- goal_val: %f", i, goal_pose.positions[i].value, self.current_joint_configuration[i])
-			if (abs(goal_pose.positions[i].value - self.current_joint_configuration[i]) > 0.05):   #ToDo: threshold via parameter
+			if (abs(goal_pose.positions[i].value - self.current_joint_configuration[i]) > 0.002):   #ToDo: threshold via parameter
 				return False
 		
 					
@@ -113,10 +72,10 @@ class ArmActionServer:
 
 
 if __name__ == "__main__":
-	rospy.init_node("arm_action_server")
+	rospy.init_node("gripper_action_server")
 	
-	action = ArmActionServer()
+	action = GripperActionServer()
 	
-	rospy.loginfo("arm action server started")
+	rospy.loginfo("gripper action server started")
 	
 	rospy.spin()

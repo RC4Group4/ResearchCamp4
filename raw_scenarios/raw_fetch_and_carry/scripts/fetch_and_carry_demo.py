@@ -1,5 +1,5 @@
 #!/usr/bin/python
-import roslib; roslib.load_manifest('raw_grri_demo')
+import roslib; roslib.load_manifest('raw_fetch_and_carry')
 import rospy
 
 import smach
@@ -11,11 +11,11 @@ from generic_navigation_states import *
 from generic_state_machines import *
 
 # scenario specific states
-from grri_demo_states import *
+from fetch_and_carry_demo_states import *
 
 # main
 def main():
-    rospy.init_node('grri_demo')
+    rospy.init_node('fetch_and_carry_demo')
 
     SM = smach.StateMachine(outcomes=['overall_failed'])
     
@@ -36,46 +36,26 @@ def main():
         
         smach.StateMachine.add('INIT_ROBOT', init_robot(),
             transitions={'succeeded':'SM_GRASP_OBJECT', 
-                         'failed':'ANNOUNCE_FAILURE'})
-        '''
+                         'failed':'overall_failed'})
+        
         smach.StateMachine.add('SELECT_POSE_TO_APPROACH', select_pose_to_approach(),
             transitions={'succeeded':'MOVE_TO_GRASP_POSE'})
         
         smach.StateMachine.add('MOVE_TO_GRASP_POSE', approach_pose(),
-            transitions={'succeeded':'ADJUST_POSE', 
-                        'failed':'ANNOUNCE_FAILURE'})
-              
-        smach.StateMachine.add('ADJUST_POSE', adjust_pose(),
             transitions={'succeeded':'SM_GRASP_OBJECT', 
-                        'failed':'ANNOUNCE_FAILURE'})
-        '''
+                        'failed':'overall_failed'})
+              
         smach.StateMachine.add('SM_GRASP_OBJECT', sm_grasp_random_object(),
             transitions={'object_grasped':'PLACE_OBJECT_ON_REAR_PLATFORM', 
-                         'failed':'ANNOUNCE_FAILURE'})
+                         'failed':'overall_failed'})
                                 
         smach.StateMachine.add('PLACE_OBJECT_ON_REAR_PLATFORM', place_obj_on_rear_platform(),
-            transitions={'succeeded':'CHECK_PLATFORM_OCCUPANCY', 
-                        'failed':'ANNOUNCE_FAILURE'})
-        
-        smach.StateMachine.add('CHECK_PLATFORM_OCCUPANCY', check_platform_occupancy(),
-            transitions={'platform_full':'MOVE_TO_INTRO', 
-                        'platform_has_free_slots':'SM_GRASP_OBJECT'})
-        
-        smach.StateMachine.add('MOVE_TO_INTRO', approach_pose("intro"),
-            transitions={'succeeded':'ANNOUCE_FULL_PLATFORM', 
-                        'failed':'ANNOUNCE_FAILURE'})
-        
-        smach.StateMachine.add('ANNOUCE_FULL_PLATFORM', announce_full_platform(),
-            transitions={'succeeded':'overall_failed',
-                         'pending':'ANNOUCE_FULL_PLATFORM'})
-        
-        smach.StateMachine.add('ANNOUNCE_FAILURE', announce_failure(),
-            transitions={'succeeded':'overall_failed'})
-
-
+            transitions={'succeeded':'SELECT_POSE_TO_APPROACH', 
+                        'failed':'overall_failed'})
+              
             
     # Start SMACH viewer
-    smach_viewer = smach_ros.IntrospectionServer('GRRI_DEMO', SM, 'GRRI_DEMO')
+    smach_viewer = smach_ros.IntrospectionServer('FETCH_AND_CARRY_DEMO', SM, 'FETCH_AND_CARRY_DEMO')
     smach_viewer.start()
 
     SM.execute()

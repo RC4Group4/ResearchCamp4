@@ -8,4 +8,7 @@
 	</include>
 
 	<include file="$(find youbot_arm_navigation)/ros/launch/constraint_aware_kinematics.launch" />
+
+	<include file="$(find raw_arm_navigation)/ros/launch/arm_action_server.launch" />
+	<include file="$(find raw_arm_navigation)/ros/launch/gripper_action_server.launch" />
 </launch>
