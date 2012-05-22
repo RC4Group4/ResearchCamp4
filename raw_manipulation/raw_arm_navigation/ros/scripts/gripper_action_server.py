@@ -15,11 +15,11 @@ class GripperActionServer:
 		self.received_state = False
 					
 		if (not rospy.has_param("joints")):
-			rospy.logerr("No joints given.")
+			rospy.logerr("No gripper joints given.")
 			exit(0)
 		else:
 			self.joint_names = sorted(rospy.get_param("joints"))
-			rospy.loginfo("Joints: %s", self.joint_names)
+			rospy.loginfo("gripper joints: %s", self.joint_names)
 		
 		self.current_joint_configuration = [0 for i in range(len(self.joint_names))]
 		
@@ -67,7 +67,7 @@ class GripperActionServer:
 				return False
 		
 					
-		rospy.loginfo("Goal pose reached")
+		rospy.loginfo("gripper goal pose reached")
 		return True
 
 
