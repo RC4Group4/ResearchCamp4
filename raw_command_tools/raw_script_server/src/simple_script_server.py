@@ -286,7 +286,7 @@ class simple_script_server:
 		'''
 		return
 
-	def move_arm(self, component_name, parameter_name=[0, 0, 0, 0, 0, 0], blocking=True):
+	def move_arm(self, component_name, parameter_name=[0, 0, 0, 0, 0, 0, "/base_link"], blocking=True):
 		if type(parameter_name) is str:
 			return self.move_arm_joint(component_name, parameter_name, blocking)
 		elif type(parameter_name) is list:
