@@ -17,11 +17,12 @@ class ImageConverter
   image_transport::Publisher image_pub_;
   
 public:
-  ImageConverter()
-    : it_(nh_)
+  ImageConverter(): it_(nh_)
   {
     image_pub_ = it_.advertise("out", 1);
-    image_sub_ = it_.subscribe("in", 1, &ImageConverter::imageCb, this);
+
+    // subscribing to the raw_usb_cam feed. 
+    image_sub_ = it_.subscribe("/usb_cam/image_raw", 1, &ImageConverter::imageCb, this);
 
     cv::namedWindow(WINDOW);
   }
