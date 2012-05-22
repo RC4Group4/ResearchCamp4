@@ -24,9 +24,9 @@ def main():
     SM.userdata.base_pose_to_approach = -1; 
     SM.userdata.object_list = [];
                                             # x, y, z, roll, pitch, yaw
-    SM.userdata.rear_platform_free_poses = [[0.033 + 0.024 - 0.32, 0.0, 0.14, 0, -math.pi + 0.2, 0],   #front pos
-                                            [0.033 + 0.024 - 0.28, 0.0, 0.14, 0, -math.pi + 0.3, 0],    #rear pos
-                                            [0.033 + 0.024 - 0.235, 0.0, 0.14, 0, -math.pi + 0.3, 0]]
+    SM.userdata.rear_platform_free_poses = [[0.033 + 0.024 - 0.32,  0.0, 0.14, 0, -math.pi + 0.2, 0, "/arm_link_0"],   #front pos
+                                            [0.033 + 0.024 - 0.28,  0.0, 0.14, 0, -math.pi + 0.3, 0, "/arm_link_0"],    #rear pos
+                                            [0.033 + 0.024 - 0.235, 0.0, 0.14, 0, -math.pi + 0.3, 0, "/arm_link_0"]]
     
     SM.userdata.rear_platform_occupied_poses = []
 
@@ -38,12 +38,14 @@ def main():
             transitions={'succeeded':'SM_GRASP_OBJECT', 
                          'failed':'overall_failed'})
         
+        '''
         smach.StateMachine.add('SELECT_POSE_TO_APPROACH', select_pose_to_approach(),
             transitions={'succeeded':'MOVE_TO_GRASP_POSE'})
         
         smach.StateMachine.add('MOVE_TO_GRASP_POSE', approach_pose(),
             transitions={'succeeded':'SM_GRASP_OBJECT', 
                         'failed':'overall_failed'})
+        '''
               
         smach.StateMachine.add('SM_GRASP_OBJECT', sm_grasp_random_object(),
             transitions={'object_grasped':'PLACE_OBJECT_ON_REAR_PLATFORM', 
