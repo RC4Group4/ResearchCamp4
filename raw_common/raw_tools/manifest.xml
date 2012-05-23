@@ -9,8 +9,8 @@
   <review status="unreviewed" notes=""/>
   <url>http://ros.org/wiki/raw_tools</url>
 
-  <depend package="visualization_msgs">
-  <depend package="tf">
+  <depend package="visualization_msgs"/>
+  <depend package="tf"/>
 </package>
 
 
