@@ -1,0 +1,16 @@
+<package>
+  <description brief="raw_tools">
+
+     raw_tools
+
+  </description>
+  <author>fred</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/raw_tools</url>
+
+  <depend package="visualization_msgs">
+  <depend package="tf">
+</package>
+
+
