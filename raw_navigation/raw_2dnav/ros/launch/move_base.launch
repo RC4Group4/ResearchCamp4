@@ -12,6 +12,5 @@
 		<rosparam file="$(find raw_2dnav)/ros/config/local_costmap_params.yaml" 	command="load" />
 		<rosparam file="$(find raw_2dnav)/ros/config/global_costmap_params.yaml" 	command="load" />
 		<rosparam file="$(find raw_2dnav)/ros/config/base_local_planner_params.yaml" command="load" />
-		<param name="base_local_planner" type="string" value="raw_local_planner/RAWPlannerROS"/>
 	</node>
 </launch>
