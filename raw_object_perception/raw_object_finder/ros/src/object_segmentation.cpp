@@ -152,6 +152,7 @@ bool ObjectSegmentation::GetObjects(
 
 bool ObjectSegmentation::Start(std_srvs::Empty::Request &req, std_srvs::Empty::Response &res)
 {
+	_last_segmented_objects.objects.clear();	
 	_cluster_sub = _nh.subscribe("/camera/rgb/points", 1, &ObjectSegmentation::Segment, this);
 
 	ROS_INFO("Object segmentation enabled");
@@ -162,6 +163,7 @@ bool ObjectSegmentation::Start(std_srvs::Empty::Request &req, std_srvs::Empty::R
 
 bool ObjectSegmentation::Stop(std_srvs::Empty::Request &req, std_srvs::Empty::Response &res)
 {
+	_last_segmented_objects.objects.clear();
 	_cluster_sub.shutdown();
 
 	ROS_INFO("Object segmentation disabled");
