@@ -34,11 +34,11 @@
 *
 * Author: Eitan Marder-Eppstein
 *********************************************************************/
-#include <raw_local_planner/planner_omnidirectional.h>
+#include <raw_local_planner_omnidirectional/planner_omnidirectional.h>
 #include <angles/angles.h>
 
-namespace raw_local_planner {
-  void RAWPlanner::reconfigureCB(RAWPlannerConfig &config, uint32_t level)
+namespace raw_local_planner_omnidirectional {
+  void RAWPlanner::reconfigureCB(PlannerConfig &config, uint32_t level)
   {
     if(setup_ && config.restore_defaults) {
       config = default_config_;
@@ -147,7 +147,7 @@ namespace raw_local_planner {
     acc_lim_[1] = acc_lim_y;
     acc_lim_[2] = acc_lim_th;
 
-    dynamic_reconfigure::Server<RAWPlannerConfig>::CallbackType cb = boost::bind(&RAWPlanner::reconfigureCB, this, _1, _2);
+    dynamic_reconfigure::Server<PlannerConfig>::CallbackType cb = boost::bind(&RAWPlanner::reconfigureCB, this, _1, _2);
     dsrv_.setCallback(cb);
 
     footprint_spec_ = costmap_ros_->getRobotFootprint();
@@ -579,7 +579,7 @@ namespace raw_local_planner {
   void RAWPlanner::updatePlan(const std::vector<geometry_msgs::PoseStamped>& new_plan){
     global_plan_.resize(new_plan.size());
     for(unsigned int i = 0; i < new_plan.size(); ++i){
-      global_plan_[i] = new_plan[i];
+    	global_plan_[i] = new_plan[i];
     }
   }
 
@@ -607,11 +607,11 @@ namespace raw_local_planner {
     front_global_plan.back().pose.position.x = front_global_plan.back().pose.position.x + forward_point_distance_ * cos(tf::getYaw(front_global_plan.back().pose.orientation));
     front_global_plan.back().pose.position.y = front_global_plan.back().pose.position.y + forward_point_distance_ * sin(tf::getYaw(front_global_plan.back().pose.orientation));
     front_map_.setPathCells(costmap_, front_global_plan);
-    ROS_DEBUG_NAMED("raw_local_planner", "Path/Goal distance computed");
+    ROS_DEBUG_NAMED("raw_local_planner_omni", "Path/Goal distance computed");
 
     //rollout trajectories and find the minimum cost one
     base_local_planner::Trajectory best = computeTrajectories(pos, vel);
-    ROS_DEBUG_NAMED("raw_local_planner", "Trajectories created");
+    ROS_DEBUG_NAMED("raw_local_planner_omni", "Trajectories created");
 
     //if we don't have a legal trajectory, we'll just command zero
     if(best.cost_ < 0){

@@ -36,13 +36,13 @@
 *********************************************************************/
 #include <pluginlib/class_list_macros.h>
 
-#include <raw_local_planner/planner_omnidirectional_ros.h>
+#include <raw_local_planner_omnidirectional/planner_omnidirectional_ros.h>
 #include <base_local_planner/goal_functions.h>
 
 //register this planner as a BaseLocalPlanner plugin
-PLUGINLIB_DECLARE_CLASS(raw_local_planner, RAWPlannerROS, raw_local_planner::RAWPlannerROS, nav_core::BaseLocalPlanner)
+PLUGINLIB_DECLARE_CLASS(raw_local_planner_omnidirectional, RAWPlannerROS, raw_local_planner_omnidirectional::RAWPlannerROS, nav_core::BaseLocalPlanner)
 
-namespace raw_local_planner {
+namespace raw_local_planner_omnidirectional {
   void RAWPlannerROS::initialize(std::string name, tf::TransformListener* tf,
       costmap_2d::Costmap2DROS* costmap_ros){
     if(!initialized_){
