@@ -2,13 +2,15 @@
 <launch>
 	<!-- base components -->
 	<include file="$(find raw_bringup)/robots/robot.launch" />
-
-	<!-- manipulation -->
-	<include file="$(find raw_arm_navigation)/ros/launch/simple_manipulation.launch" />	
 	
-	<!-- script server -->
-	<include file="$(find raw_script_server)/launch/script_server.launch" />
+	<group>
+		<machine name="pc1" address="youbot-hbrs2-pc1" default="true"/>
+		
+		<!-- manipulation -->
+		<include file="$(find raw_arm_navigation)/ros/launch/simple_manipulation.launch" />		
+		
+		<!-- script server -->
+		<include file="$(find raw_script_server)/launch/script_server.launch" />
+	</group>
 	
-	<!-- static transformation between the center of the pattern and the arm_link_5 -->
-	<node pkg="tf" type="static_transform_publisher" name="kinect_calibration_pattern_link" args="0 0 0 0 0 0 /arm_link_5 /kinect_calibration_pattern 100" />
 </launch>
