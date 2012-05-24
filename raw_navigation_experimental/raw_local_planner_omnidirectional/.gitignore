@@ -2,3 +2,4 @@ cfg/cpp/
 docs
 src
 src/raw_local_planner_omnidirectional/
+../include/raw_local_planner/planner_config.h
