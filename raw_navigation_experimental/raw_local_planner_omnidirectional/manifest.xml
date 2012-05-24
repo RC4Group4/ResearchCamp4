@@ -9,10 +9,12 @@
   <depend package="base_local_planner" />
   <depend package="angles" />
   <depend package="dynamic_reconfigure" />
+
   <export>
-    <cpp cflags="-I${prefix}/include -I${prefix}/cfg/cpp" lflags="-Wl,-rpath,${prefix}/lib -L${prefix}/lib -lraw_local_planner" />
+    <cpp cflags="-I${prefix}/include -I${prefix}/cfg/cpp" lflags="-Wl,-rpath,${prefix}/lib -L${prefix}/lib -lraw_local_planner_omnidirectional" />
     <nav_core plugin="${prefix}/blp_plugin.xml" />
   </export>
+
 </package>
 
 
