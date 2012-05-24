@@ -34,7 +34,7 @@
 *
 * Author: Eitan Marder-Eppstein
 *********************************************************************/
-#include <raw_local_planner/raw_planner.h>
+#include <raw_local_planner/planner_omnidirectional.h>
 #include <angles/angles.h>
 
 namespace raw_local_planner {

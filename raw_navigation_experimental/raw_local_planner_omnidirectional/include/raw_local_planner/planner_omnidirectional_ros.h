@@ -37,7 +37,7 @@
 #ifndef RAW_LOCAL_PLANNER_RAW_PLANNER_ROS_H_
 #define RAW_LOCAL_PLANNER_RAW_PLANNER_ROS_H_
 #include <angles/angles.h>
-#include <raw_local_planner/raw_planner.h>
+#include <raw_local_planner/planner_omnidirectional.h>
 #include <boost/shared_ptr.hpp>
 #include <nav_core/base_local_planner.h>
 

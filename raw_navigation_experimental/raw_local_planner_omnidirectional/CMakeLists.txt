@@ -26,7 +26,9 @@ include(${dynamic_reconfigure_PACKAGE_PATH}/cmake/cfgbuild.cmake)
 gencfg()
 
 #common commands for building c++ executables and libraries
-rosbuild_add_library(raw_local_planner src/raw_planner.cpp src/raw_planner_ros.cpp)
+
+rosbuild_add_library(local_planner_omnidirectional src/planner_omnidirectional.cpp src/planner_omnidirectional_ros.cpp)
+
 #target_link_libraries(${PROJECT_NAME} another_library)
 #rosbuild_add_boost_directories()
 #rosbuild_link_boost(${PROJECT_NAME} thread)

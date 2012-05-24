@@ -51,7 +51,7 @@
 #include <raw_local_planner/velocity_iterator.h>
 
 #include <dynamic_reconfigure/server.h>
-#include <raw_local_planner/RAWPlannerConfig.h>
+#include <raw_local_planner/planner_config.h>
 
 #include <base_local_planner/map_grid_visualizer.h>
 

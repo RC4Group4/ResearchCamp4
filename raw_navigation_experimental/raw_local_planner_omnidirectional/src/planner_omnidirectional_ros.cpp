@@ -36,7 +36,7 @@
 *********************************************************************/
 #include <pluginlib/class_list_macros.h>
 
-#include <raw_local_planner/raw_planner_ros.h>
+#include <raw_local_planner/planner_omnidirectional_ros.h>
 #include <base_local_planner/goal_functions.h>
 
 //register this planner as a BaseLocalPlanner plugin
