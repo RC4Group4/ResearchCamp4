@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+	
+	<!-- static transformation between the center of the pattern and the arm_link_5 -->
+	<node pkg="tf" type="static_transform_publisher" name="kinect_calibration_pattern_link" args="0 0 0.16 0 0 0 /arm_link_5 /kinect_calibration_pattern 100" />	
+	
+</launch>

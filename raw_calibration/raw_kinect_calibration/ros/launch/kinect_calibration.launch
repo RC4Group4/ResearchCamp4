@@ -2,10 +2,6 @@
 <launch>
 	<rosparam command="load" ns="/script_server/arm/calibration_poses" file="$(find raw_kinect_calibration)/ros/config/arm_calibration_poses.yaml"/>
 	<rosparam command="load" ns="/script_server/arm" file="$(find raw_kinect_calibration)/ros/config/arm_calibration_poses.yaml"/>
-	
-	<!-- static transformation between the center of the pattern and the arm_link_5 -->
-	<node pkg="tf" type="static_transform_publisher" name="kinect_calibration_pattern_link" args="0 0 0 0 0 0 /arm_link_5 /kinect_calibration_pattern 100" />	
-	
 
 	<node name="ar_kinect" pkg="ar_kinect" type="ar_kinect" respawn="false" output="screen">
 		<param name="marker_pattern_list" type="string" value="$(find raw_kinect_calibration)/ros/config/pattern_database.cfg"/>
