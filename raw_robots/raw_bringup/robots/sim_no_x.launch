@@ -16,6 +16,5 @@
 	<include file="$(find raw_bringup)/components/arm.launch" />	
 	
 	<include file="$(find raw_teleop)/ros/launch/teleop_joypad.launch" />
-
-	
+	<include file="$(find raw_simulated_kinect)/ros/launch/simulated_kinect.launch" />	
 </launch>
