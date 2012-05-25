@@ -1,47 +1,38 @@
 <?xml version="1.0"?>
-<root xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
-      xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
-      xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
-      xmlns:xacro="http://ros.org/wiki/xacro">
-  
-<xacro:macro name="kinect_gazebo" params="name ros_topic">
 
+<robot 
+	xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller" 
+	xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface" 
+	xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor" 
+	xmlns:xacro="http://ros.org/wiki/xacro" 
+	name="kinect_gazebo">
 
+<xacro:macro name="kinect_gazebo" params="frame_rate">
   <gazebo reference="openni_camera">
-    <sensor:ray name="${name}_sensor">
-          <rayCount>160</rayCount> <!--true value 640-->
-          <rangeCount>160</rangeCount>
-          <laserCount>1</laserCount>
-          
-          <origin>0.0 0.0 0.05</origin>
-          <displayRays>false</displayRays>
-          
-          <minAngle>-31.63</minAngle>
-          <maxAngle>31.63</maxAngle>
-          
-          <minRange>1.00</minRange> <!--0.8m min calibrated range-->
-          <maxRange>5.0</maxRange> <!--5.0m max calibrated range-->
-          <resRange>0.010</resRange>
-          <updateRate>10</updateRate> <!-- true value 30Hz -->
-
-          <verticalRayCount>120</verticalRayCount> <!--true value 480 -->
-          <verticalRangeCount>120</verticalRangeCount>
-          <verticalMinAngle>-25.74</verticalMinAngle>
-          <verticalMaxAngle>25.74</verticalMaxAngle>
-
-          <controller:gazebo_ros_block_laser name="kinect_controller" plugin="libgazebo_ros_block_laser.so">
-            <gaussianNoise>0.005</gaussianNoise>
-            <alwaysOn>true</alwaysOn>
-            <updateRate>10</updateRate> <!-- true value 30Hz -->
-            <topicName>${ros_topic}</topicName>
-            <frameName>openni_camera</frameName>
-            <interface:laser name="${name}_ray_block_iface" />
-          </controller:gazebo_ros_block_laser>
-        </sensor:ray>
-    <material value="Gazebo/Red" />
-    <turnGravityOff>true</turnGravityOff>
+    <sensor:camera name="camera">
+      <imageFormat>R8G8B8</imageFormat>
+      <imageSize>640 480</imageSize>
+      <hfov>57</hfov>
+      <nearClip>0.1</nearClip>
+      <farClip>5</farClip>
+      <updateRate>${frame_rate}</updateRate>
+      <baseline>0.2</baseline>
+      <controller:gazebo_ros_openni_kinect name="kinect_camera_controller" plugin="libgazebo_ros_openni_kinect.so">
+        <alwaysOn>true</alwaysOn>
+        <updateRate>${frame_rate}</updateRate>
+        <imageTopicName>/camera/image_raw</imageTopicName>
+        <pointCloudTopicName>/camera/depth/points</pointCloudTopicName>
+        <cameraInfoTopicName>/camera/camera_info</cameraInfoTopicName>
+        <frameName>/openni_depth_optical_frame</frameName>
+        <distortion_k1>0.000000001</distortion_k1>
+        <distortion_k2>0.000000001</distortion_k2>
+        <distortion_k3>0.000000001</distortion_k3>
+        <distortion_t1>0.000000001</distortion_t1>
+        <distortion_t2>0.000000001</distortion_t2>
+      </controller:gazebo_ros_openni_kinect>
+    </sensor:camera>
   </gazebo>
-
 </xacro:macro>
 
-</root>
+
+</robot>
