@@ -1,6 +1,10 @@
 <?xml version="1.0"?>
 <launch>
+    <!-- navigation goals -->
 	<include file="$(find raw_default_env_config)/upload_param.launch" />
+    
+    <!-- visualize navigation goals -->
+	<node pkg="raw_tools" type="navigation_goals_as_marker.py" name="raw_navigation_goals_as_marker"/>
 
 	<arg name="map" default="$(find raw_default_env_config)/$(env ROBOT_ENV)/map.yaml" />
 
@@ -12,18 +16,5 @@
 
 	<!-- launch move_base node -->
 	<include file="$(find raw_2dnav)/ros/launch/move_base.launch" />
-        <include file="$(find raw_2dnav)/ros/launch/ekf.launch" />
-<!--
-	<node pkg="robot_pose_ekf" type="robot_pose_ekf" name="robot_pose_ekf" output="screen">
-		<param name="freq" value="30.0"/>
-		<param name="sensor_timeout" value="1.0"/>
-		<param name="publish_tf" value="true"/>
-		<param name="odom_used" value="true"/>
-		<param name="imu_used" value="false"/>
-		<param name="vo_used" value="false"/>
-		<param name="output_frame" value="odom"/>
-		
-		<remap from="odom" to="/odom" />
-	</node>
--->	
+
 </launch>

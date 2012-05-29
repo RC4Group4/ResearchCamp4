@@ -62,7 +62,7 @@
 
   <!-- tower with 3D camera -->
   <xacro:cam3d_tower name="tower" parent="plate_link">
-    <origin xyz="-0.025 0 0.025" rpy="0 0 0" />
+    <origin xyz="-0.015 0 0.025" rpy="0 0 0" />
   </xacro:cam3d_tower>
 
   <!-- ASUS Xtion on arm joint 4 

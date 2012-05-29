@@ -1,0 +1,9 @@
+<stack>
+  <description brief="raw_navigation_experimental">raw_navigation_experimental</description>
+  <author>Maintained by atwork</author>
+  <license>BSD</license>  
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/raw_navigation_experimental</url>
+  <depend stack="ros" />
+
+</stack>

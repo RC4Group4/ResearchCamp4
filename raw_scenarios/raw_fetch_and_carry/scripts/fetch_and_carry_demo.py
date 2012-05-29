@@ -20,7 +20,7 @@ def main():
     SM = smach.StateMachine(outcomes=['overall_failed'])
     
     # world knowledge
-    SM.userdata.base_pose_list = ["grasp_blue_box", "grasp_red_box"]
+    SM.userdata.base_pose_list = ["S2", "D1"]
     SM.userdata.base_pose_to_approach = -1; 
     SM.userdata.object_list = [];
                                             # x, y, z, roll, pitch, yaw
@@ -35,18 +35,16 @@ def main():
         # add states to the container
         
         smach.StateMachine.add('INIT_ROBOT', init_robot(),
-            transitions={'succeeded':'SM_GRASP_OBJECT', 
+            transitions={'succeeded':'SELECT_POSE_TO_APPROACH', 
                          'failed':'overall_failed'})
         
-        '''
         smach.StateMachine.add('SELECT_POSE_TO_APPROACH', select_pose_to_approach(),
             transitions={'succeeded':'MOVE_TO_GRASP_POSE'})
         
         smach.StateMachine.add('MOVE_TO_GRASP_POSE', approach_pose(),
             transitions={'succeeded':'SM_GRASP_OBJECT', 
                         'failed':'overall_failed'})
-        '''
-              
+                      
         smach.StateMachine.add('SM_GRASP_OBJECT', sm_grasp_random_object(),
             transitions={'object_grasped':'PLACE_OBJECT_ON_REAR_PLATFORM', 
                          'failed':'overall_failed'})

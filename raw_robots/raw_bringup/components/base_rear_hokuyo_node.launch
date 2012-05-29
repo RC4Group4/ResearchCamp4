@@ -3,8 +3,8 @@
 
 	<!-- start the hokuyo node -->
 	<node type="hokuyo_node" pkg="hokuyo_node" name="hokuyo_rear_node">  
-		<param name="min_ang" type="double" value="-1.3" />
-		<param name="max_ang" type="double" value="1.3" />
+		<param name="min_ang" type="double" value="-1.57" />
+		<param name="max_ang" type="double" value="1.57" />
 		<param name="port" type="string" value="/dev/youbot/hokuyo_rear"/>
 		<param name="frame_id" value="/base_laser_rear_link"/>
 		<remap from="/scan" to="/scan_rear"/>

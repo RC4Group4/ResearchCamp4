@@ -1,0 +1,19 @@
+<package>
+  <description brief="raw_kinect_calibration">
+
+     raw_kinect_calibration
+
+  </description>
+  <author>fred</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/raw_kinect_calibration</url>
+
+  <depend package="ar_kinect" />
+  <depend package="raw_script_server" />
+  <depend package="tf" />
+  <depend package="geometry_msgs" />
+  
+</package>
+
+

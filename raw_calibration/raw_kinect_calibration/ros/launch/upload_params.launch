@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<launch>
+	<rosparam command="load" ns="/script_server/arm/calibration_poses" file="$(find raw_kinect_calibration)/ros/config/arm_calibration_poses.yaml"/>
+	<rosparam command="load" ns="/script_server/arm" file="$(find raw_kinect_calibration)/ros/config/arm_calibration_poses.yaml"/>
+	
+
+	
+</launch>

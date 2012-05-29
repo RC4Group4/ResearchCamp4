@@ -1,7 +1,0 @@
-<library path="lib/libraw_local_planner">
-  <class name="raw_local_planner/RAWPlannerROS" type="raw_local_planner::RAWPlannerROS" base_class_type="nav_core::BaseLocalPlanner">
-    <description>
-      A implementation of a local planner using either a RAW approach based on configuration parameters.
-    </description>
-  </class>
-</library>

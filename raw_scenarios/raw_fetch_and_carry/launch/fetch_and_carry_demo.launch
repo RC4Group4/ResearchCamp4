@@ -3,15 +3,22 @@
 	<!-- base components -->
 	<include file="$(find raw_bringup)/robots/robot.launch" />
 
-	<!-- navigation -->
-	<include file="$(find raw_2dnav)/ros/launch/2dnav.launch" />
+	<group>
+		<machine name="pc1" address="youbot-hbrs2-pc1" default="true"/>
+		<!-- navigation -->
+		<include file="$(find raw_2dnav)/ros/launch/2dnav.launch" />
 
-	<!-- manipulation -->
-	<include file="$(find raw_arm_navigation)/ros/launch/simple_manipulation.launch" />	
-	
-	<!-- perception --> 
-	<include file="$(find raw_object_finder)/ros/launch/object_segmentation.launch" />
-	
+		<!-- manipulation -->
+		<include file="$(find raw_arm_navigation)/ros/launch/simple_manipulation.launch" />	
+
 		<!-- script server -->
-	<include file="$(find raw_script_server)/launch/script_server.launch" />
+		<include file="$(find raw_script_server)/launch/script_server.launch" />
+	</group>
+
+	<group>
+		<machine name="pc2" address="youbot-hbrs2-pc2" default="true"/>
+	
+		<!-- perception --> 
+		<include file="$(find raw_object_finder)/ros/launch/object_segmentation.launch" />
+	</group>
 </launch>

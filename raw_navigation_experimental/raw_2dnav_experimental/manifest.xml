@@ -1,0 +1,24 @@
+<package>
+  <description brief="raw_2dnav_experimental">
+
+     raw_2dnav_experimental
+
+  </description>
+  <author>fred</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/raw_2dnav_experimental</url>
+
+  <depend package="raw_tools"/>
+  <depend package="raw_default_env_config"/>
+  <depend package="map_server"/>
+  <depend package="amcl"/>
+  <depend package="robot_pose_ekf"/>
+  <depend package="youbot_navigation_common"/>
+  <depend package="move_base"/>
+  <depend package="raw_tools"/>
+
+
+</package>
+
+

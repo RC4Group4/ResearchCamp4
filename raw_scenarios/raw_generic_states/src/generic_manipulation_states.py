@@ -21,18 +21,18 @@ class grasp_random_object(smach.State):
         
         for object in userdata.object_list:         
             # ToDo: need to be adjusted to correct stuff           
-            if object.z <= 0.05 and object.z >= 0.30:
+            if object.pose.pose.position.z <= 0.05 and object.pose.pose.position.z >= 0.30:
                 continue
                         
-            handle_arm = sss.move("arm", [object.x , object.y, object.z, 0, ((math.pi/2) + (math.pi/4)), 0, "/base_link"])
-                      
-            if handle_arm.get_state() == arm_navigation_msgs.msg.ArmNavigationErrorCodes.SUCCESS:
+            handle_arm = sss.move("arm", [object.pose.pose.position.x - 0.02, object.pose.pose.position.y - 0.01, object.pose.pose.position.z + 0.07, 0, ((math.pi/2) + (math.pi/4)), 0, "/base_link"])
+   
+            if handle_arm.get_state() == 3:
                 sss.move("gripper", "close")
                 rospy.sleep(2.0)
                 sss.move("arm", "zeroposition")        
                 return 'succeeded'    
             else:
-                rospy.logerror('could not find IK for current object')
+                rospy.logerr('could not find IK for current object')
 
         return 'failed'
         
