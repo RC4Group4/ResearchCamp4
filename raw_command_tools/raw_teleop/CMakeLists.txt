@@ -16,6 +16,10 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 #set the default path for built libraries to the "lib" directory
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 
+include_directories(
+	${PROJECT_SOURCE_DIR}/ros/include
+)
+
 #uncomment if you have defined messages
 #rosbuild_genmsg()
 #uncomment if you have defined services
@@ -30,4 +34,4 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 #target_link_libraries(example ${PROJECT_NAME})
 
 
-rosbuild_add_executable(teleop_joypad_node ros/nodes/teleop_joypad_node.cpp)
+rosbuild_add_executable(teleop_joypad_node ros/nodes/teleop_joypad_node.cpp ros/src/teleop_joypad.cpp)
