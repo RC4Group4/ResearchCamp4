@@ -1,0 +1,16 @@
+/home/bad-robot/ros/RoboCupAtWork/raw_object_perception/raw_blob_detection/CMakeFiles/ROSBUILD_genmsg_cpp.dir
+/home/bad-robot/ros/RoboCupAtWork/raw_object_perception/raw_blob_detection/CMakeFiles/ROSBUILD_genmsg_lisp.dir
+/home/bad-robot/ros/RoboCupAtWork/raw_object_perception/raw_blob_detection/CMakeFiles/ROSBUILD_gensrv_cpp.dir
+/home/bad-robot/ros/RoboCupAtWork/raw_object_perception/raw_blob_detection/CMakeFiles/ROSBUILD_gensrv_lisp.dir
+/home/bad-robot/ros/RoboCupAtWork/raw_object_perception/raw_blob_detection/CMakeFiles/clean-test-results.dir
+/home/bad-robot/ros/RoboCupAtWork/raw_object_perception/raw_blob_detection/CMakeFiles/raw_blob_detection.dir
+/home/bad-robot/ros/RoboCupAtWork/raw_object_perception/raw_blob_detection/CMakeFiles/rosbuild_precompile.dir
+/home/bad-robot/ros/RoboCupAtWork/raw_object_perception/raw_blob_detection/CMakeFiles/rosbuild_premsgsrvgen.dir
+/home/bad-robot/ros/RoboCupAtWork/raw_object_perception/raw_blob_detection/CMakeFiles/rospack_genmsg.dir
+/home/bad-robot/ros/RoboCupAtWork/raw_object_perception/raw_blob_detection/CMakeFiles/rospack_genmsg_libexe.dir
+/home/bad-robot/ros/RoboCupAtWork/raw_object_perception/raw_blob_detection/CMakeFiles/rospack_gensrv.dir
+/home/bad-robot/ros/RoboCupAtWork/raw_object_perception/raw_blob_detection/CMakeFiles/test.dir
+/home/bad-robot/ros/RoboCupAtWork/raw_object_perception/raw_blob_detection/CMakeFiles/test-future.dir
+/home/bad-robot/ros/RoboCupAtWork/raw_object_perception/raw_blob_detection/CMakeFiles/test-results.dir
+/home/bad-robot/ros/RoboCupAtWork/raw_object_perception/raw_blob_detection/CMakeFiles/test-results-run.dir
+/home/bad-robot/ros/RoboCupAtWork/raw_object_perception/raw_blob_detection/CMakeFiles/tests.dir
