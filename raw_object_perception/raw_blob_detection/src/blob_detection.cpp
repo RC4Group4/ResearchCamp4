@@ -1,64 +1,103 @@
 #include <ros/ros.h>
-#include <image_transport/image_transport.h>
-#include <cv_bridge/cv_bridge.h>
-#include <sensor_msgs/image_encodings.h>
-#include <opencv2/imgproc/imgproc.hpp>
-#include <opencv2/highgui/highgui.hpp>
+#include "sensor_msgs/Image.h"
+#include "image_transport/image_transport.h"
+#include "cv_bridge/CvBridge.h"
+#include <opencv/cv.h>
+#include <opencv/highgui.h>
 
-namespace enc = sensor_msgs::image_encodings;
+// cvBlobsLib Includes.
+#include <cvblobs/BlobResult.h>
 
-static const char WINDOW[] = "Image window";
-
-class ImageConverter
+class ImageConverter 
 {
-  ros::NodeHandle nh_;
-  image_transport::ImageTransport it_;
-  image_transport::Subscriber image_sub_;
-  image_transport::Publisher image_pub_;
-  
+
 public:
-  ImageConverter(): it_(nh_)
+
+  ImageConverter(ros::NodeHandle &n) : n_(n), it_(n_)
   {
-    image_pub_ = it_.advertise("out", 1);
+    image_pub_ = it_.advertise("image_topic_2",1);
 
-    // subscribing to the raw_usb_cam feed. 
-    image_sub_ = it_.subscribe("/usb_cam/image_raw", 1, &ImageConverter::imageCb, this);
-
-    cv::namedWindow(WINDOW);
+    //cvNamedWindow( "Image window" );
+    image_sub_ = it_.subscribe( "/usb_cam/image_raw", 1, &ImageConverter::imageCallback, this );
   }
 
   ~ImageConverter()
   {
-    cv::destroyWindow(WINDOW);
+    cvDestroyWindow("Image window");
   }
 
-  void imageCb(const sensor_msgs::ImageConstPtr& msg)
+  void imageCallback(const sensor_msgs::ImageConstPtr& msg_ptr)
   {
-    cv_bridge::CvImagePtr cv_ptr;
+    IplImage* cv_image = NULL;
     try
     {
-      cv_ptr = cv_bridge::toCvCopy(msg, enc::BGR8);
+      cv_image = bridge_.imgMsgToCv(msg_ptr, "bgr8");
     }
-    catch (cv_bridge::Exception& e)
+    catch (sensor_msgs::CvBridgeException error)
     {
-      ROS_ERROR("cv_bridge exception: %s", e.what());
-      return;
+      ROS_ERROR("error");
     }
 
-    if (cv_ptr->image.rows > 60 && cv_ptr->image.cols > 60)
-      cv::circle(cv_ptr->image, cv::Point(50, 50), 10, CV_RGB(255,0,0));
+    IplImage* gray = cvCreateImage( cvGetSize( cv_image ), 8, 1);
+    cvCvtColor( cv_image, gray, CV_BGR2GRAY );
 
-    cv::imshow(WINDOW, cv_ptr->image);
-    cv::waitKey(3);
+    cvThreshold( gray, gray, 0, 255, CV_THRESH_BINARY_INV | CV_THRESH_OTSU );
+
+    // Find any blobs that are not white. 
+    CBlobResult blobs = CBlobResult( gray, NULL, 255 );
+
+    // get mean gray color of biggest blob
+    CBlob biggestBlob;
+    CBlobGetMean getMeanColor( cv_image );
+    double meanGray;
+
+    //blobs.GetNth( CBlobGetArea(), 0, biggestBlob );
+    //meanGray = getMeanColor( biggestBlob );
+
+    // display filtered blobs
+    //cvMerge( gray, gray, gray, NULL, displayedImage );
+
+    /*for (i = 0; i < blobs.GetNumBlobs(); i++ )
+    {
+            currentBlob = blobs.GetBlob(i);
+            currentBlob->FillBlob( displayedImage, CV_RGB(255,0,0));
+    }*/
+
+    // ----- DEBUGGING -----
+    //cvShowImage( "Image window", cv_image );
+    // ---------------------
+
+    // Setting up fonts for overlay information.
+    CvFont font;
+    cvInitFont(&font, CV_FONT_HERSHEY_SIMPLEX, 1.0, 1.0, 0, 1, CV_AA);
     
-    image_pub_.publish(cv_ptr->toImageMsg());
+
+    //cvPutText( gray, "Hello World!", cvPoint( 10, gray->height - 10 ), &font, cvScalar( 255, 1, 1 ) );
+    cvRectangle( gray, cvPoint( 0, gray->height-50 ), cvPoint( gray->width, gray->height ), CV_RGB( 0, 255, 0 ), -1 );
+
+
+    cvPutText( gray, "X: ", cvPoint( 10, gray->height - 10 ), &font, CV_RGB( 0, 255, 255 ) );
+    cvPutText( gray, "Y: ", cvPoint( 110, gray->height - 10 ), &font, CV_RGB( 0, 255, 255 ) );
+    cvPutText( gray, "Rotation: ", cvPoint( 210, gray->height - 10 ), &font, CV_RGB( 0, 255, 255 ) );
+
+    cvShowImage(  "Thresholding", gray ); 
+    cvWaitKey(3);
   }
+
+protected:
+
+  ros::NodeHandle n_;
+  image_transport::ImageTransport it_;
+  image_transport::Subscriber image_sub_;
+  sensor_msgs::CvBridge bridge_;
+  image_transport::Publisher image_pub_;
 };
 
 int main(int argc, char** argv)
 {
   ros::init(argc, argv, "image_converter");
-  ImageConverter ic;
+  ros::NodeHandle n;
+  ImageConverter ic(n);
   ros::spin();
   return 0;
 }
