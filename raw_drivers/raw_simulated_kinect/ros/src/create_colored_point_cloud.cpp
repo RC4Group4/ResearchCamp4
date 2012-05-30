@@ -137,8 +137,8 @@ public:
     num_subs++;
     if(num_subs > 0)
     {
-      color_image_sub_.subscribe(image_transport_,"image_color", 1);
-      pc_sub_.subscribe(n_, "point_cloud2", 1);
+      color_image_sub_.subscribe(image_transport_,"/camera/rgb/image_raw", 1);
+      pc_sub_.subscribe(n_, "/camera/depth/points", 1);
     }
   }
 
@@ -163,7 +163,7 @@ public:
     sensor_msgs::PointCloud2 cpc_msg;
     // create point_cloud message
     cpc_msg.header = pc->header;
-
+    
     cv_bridge::CvImagePtr cv_ptr;
     try
     {
