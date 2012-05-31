@@ -29,6 +29,10 @@ public:
   void imageCallback(const sensor_msgs::ImageConstPtr& msg_ptr)
   {
     IplImage* cv_image = NULL;
+    IplImage* display_image = NULL;
+
+    CBlob* currentBlob; 
+
     try
     {
       cv_image = bridge_.imgMsgToCv(msg_ptr, "bgr8");
@@ -41,6 +45,8 @@ public:
     IplImage* gray = cvCreateImage( cvGetSize( cv_image ), 8, 1);
     cvCvtColor( cv_image, gray, CV_BGR2GRAY );
 
+    display_image = cvCreateImage( cvGetSize( cv_image ), 8, 1 ); 
+
     cvThreshold( gray, gray, 0, 255, CV_THRESH_BINARY_INV | CV_THRESH_OTSU );
 
     // Find any blobs that are not white. 
@@ -51,17 +57,17 @@ public:
     CBlobGetMean getMeanColor( cv_image );
     double meanGray;
 
-    //blobs.GetNth( CBlobGetArea(), 0, biggestBlob );
-    //meanGray = getMeanColor( biggestBlob );
+    blobs.GetNthBlob( CBlobGetArea(), 0, biggestBlob );
+    meanGray = getMeanColor( biggestBlob );
 
     // display filtered blobs
-    //cvMerge( gray, gray, gray, NULL, displayedImage );
+    cvMerge( gray, gray, gray, NULL, display_image );
 
-    /*for (i = 0; i < blobs.GetNumBlobs(); i++ )
+    for ( int i = 0; i < blobs.GetNumBlobs(); i++ )
     {
-            currentBlob = blobs.GetBlob(i);
-            currentBlob->FillBlob( displayedImage, CV_RGB(255,0,0));
-    }*/
+            //currentBlob = blobs.GetBlob(i);
+            //currentBlob->FillBlob( display_image, CV_RGB( 255, 0, 0 ) );
+    }
 
     // ----- DEBUGGING -----
     //cvShowImage( "Image window", cv_image );
@@ -81,6 +87,9 @@ public:
     cvPutText( gray, "Rotation: ", cvPoint( 210, gray->height - 10 ), &font, CV_RGB( 0, 255, 255 ) );
 
     cvShowImage(  "Thresholding", gray ); 
+
+    cvShowImage( "Found Blobs", display_image ); 
+
     cvWaitKey(3);
   }
 
