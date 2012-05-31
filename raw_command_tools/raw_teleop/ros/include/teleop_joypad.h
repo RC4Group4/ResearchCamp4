@@ -11,8 +11,11 @@
 #include <ros/ros.h>
 #include <geometry_msgs/Twist.h>
 #include <sensor_msgs/Joy.h>
+#include <sensor_msgs/JointState.h>
 #include <brics_actuator/JointVelocities.h>
 #include <std_srvs/Empty.h>
+#include <boost/units/systems/si.hpp>
+#include <boost/units/io.hpp>
 #include <vector>
 #include <string>
 
@@ -43,11 +46,16 @@ public:
 
 private:
 	void cbJoy(const sensor_msgs::Joy::ConstPtr& command);
+	void cbJoinStates(const sensor_msgs::JointState::ConstPtr& state_msg);
 	void setAllJointVel(double motor_vel);
 	void setSingleJointVel(double motor_vel, std::string joint_name);
+	void check_arm_joint_limits();
 	void turnOnArmMotorsOn();
 	void turnOnArmMotorsOff();
 
+	sensor_msgs::JointState current_joint_states_;
+	bool is_in_soft_joint_limits_;
+	double soft_joint_limit_threshold_;
 	double speed_factor_;
 
 	bool button_deadman_pressed_;
@@ -55,6 +63,7 @@ private:
 	bool button_run_pressed_;
 
 	std::vector<std::string> arm_joint_names_;
+	std::vector<std::string> arm_joint_limits_;
 	brics_actuator::JointVelocities arm_vel_;
 	double arm_max_vel_;
 
@@ -63,6 +72,7 @@ private:
 	geometry_msgs::Twist base_factor_;
 
 	ros::Subscriber sub_joy_;
+	ros::Subscriber sub_joint_states_;
 	ros::Publisher pub_base_vel;
 	ros::Publisher pub_arm_vel;
 

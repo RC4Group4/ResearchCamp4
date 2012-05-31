@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <!--
 
 									Wall 1
@@ -11,31 +12,30 @@
 									Wall 3
 -->
 
-<robot name="arena">
-  
+<robot name="arena">	
 
   	<link name="wall_1">
     		<inertial>
-      			<origin xyz="0 1.215 0" /> 
+      			<origin xyz="0.0 1.22 0.0" /> 
       			<mass value="10.0" />
       			<inertia  ixx="1.0" ixy="0.0"  ixz="0.0"  iyy="1.0"  iyz="0.0"  izz="1.0" />
     		</inertial>
     		<visual>
-      			<origin xyz="0 1.20 0"/>
+      			<origin xyz="0.0 1.22 0.0"/>
       			<geometry>
-        			<box size="4.4 0.015 0.3" />
+        			<box size="4.04 0.015 0.3" />
       			</geometry>
     		</visual>
     		<collision>
-      			<origin xyz="0 1.20 0"/>
+      			<origin xyz="0.0 1.22 0.0"/>
       		<geometry>
-        		<box size="4.4 0.015 0.3" />
+        		<box size="4.04 0.015 0.3" />
       		</geometry>
     		</collision>
   	</link>
 
 	<joint name="join1" type="fixed">
-    		<origin xyz="2.2 0 0" rpy="0 0 0"/>
+    		<origin xyz="2.02 0 0" rpy="0 0 0"/>
     		<parent link="wall_1"/>
     		<child link="wall_2"/>
   	</joint>
@@ -49,13 +49,13 @@
     		<visual>
       			<origin xyz="0 0 0"/>
       			<geometry>
-        			<box size="0.015 -2.43 0.3" />
+        			<box size="0.015 -2.44 0.3" />
       			</geometry>
     		</visual>
     		<collision>
       			<origin xyz="0 0 0"/>
       			<geometry>
-        			<box size="0.015 -2.43 0.3" />
+        			<box size="0.015 -2.44 0.3" />
       			</geometry>
     		</collision>
   	</link>
@@ -113,7 +113,7 @@
   	</link>
 
 	<joint name="join2" type="fixed">
-    		<origin xyz="-2.2 -1.215 0" rpy="0 0 0"/>
+    		<origin xyz="-2.02 -1.22 0" rpy="0 0 0"/>
     		<parent link="wall_2"/>
     		<child link="wall_3"/>
   	</joint>
@@ -127,13 +127,13 @@
     		<visual>
       			<origin xyz="0 0 0"/>
       			<geometry>
-        			<box size="4.4 0.015 0.3" />
+        			<box size="4.04 0.015 0.3" />
       			</geometry>
     		</visual>
     		<collision>
       			<origin xyz="0 0 0"/>
       		<geometry>
-        		<box size="4.4 0.015 0.3" />
+        		<box size="4.04 0.015 0.3" />
       		</geometry>
     		</collision>
   	</link>
@@ -153,13 +153,13 @@
     		<visual>
       			<origin xyz="0 0.0 0"/>
       			<geometry>
-        			<box size="0.5 2.43 0.11" />
+        			<box size="0.5 2.44 0.11" />
       			</geometry>
     		</visual>
     		<collision>
       			<origin xyz="0 0.0 0" /> 
       		<geometry>
-        		<box size="0.5 2.43 0.11" />
+        		<box size="0.5 2.44 0.11" />
       		</geometry>
     		</collision>
   	</link>
@@ -217,7 +217,7 @@
   	</link>
 
 	<joint name="join5" type="fixed">
-    		<origin xyz="-2.2 -0.4 0" rpy="0 0 0"/>
+    		<origin xyz="-2.02 -0.4 0" rpy="0 0 0"/>
     		<parent link="wall_3"/>
     		<child link="wall_6"/>
   	</joint>
@@ -269,7 +269,7 @@
   	</link>
 
 	<joint name="join6" type="fixed">
-    		<origin xyz="-2.2 0 0" rpy="0 0 0"/>
+    		<origin xyz="-2.02 0 0" rpy="0 0 0"/>
     		<parent link="wall_1"/>
     		<child link="wall_7"/>
   	</joint>

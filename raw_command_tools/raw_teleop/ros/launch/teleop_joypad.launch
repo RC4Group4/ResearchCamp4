@@ -3,6 +3,8 @@
 	<node pkg="joy" type="joy_node" name="joy_node">
 		<param name="dev" type="string" value="/dev/input/js0" />
 		<param name="deadzone" value="0.12" />
+		<param name="autorepeat_rate" value="50.0" />
+
 	</node>
 	
 	<!-- start youbot teleop node -->
@@ -10,6 +12,6 @@
 		<param name="base_max_linear_x_vel" value="0.5" /> <!-- m per second in run mode -->
 		<param name="base_max_linear_y_vel" value="0.5" /> <!-- m per second in run mode -->
 		<param name="base_max_angular_vel" value="1.0" /> <!-- rad per second in run mode -->
-		<param name="arm_max_vel" value="0.2" /> <!-- rad per second in run mode -->
+		<param name="arm_max_vel" value="0.8" /> <!-- rad per second in run mode -->
 	</node>
 </launch>
