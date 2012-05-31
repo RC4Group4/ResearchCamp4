@@ -13,28 +13,21 @@
 -->
 
 <robot name="arena">	
-    <!-- 
-    <link name="world" />
-        <joint name="join0" type="fixed">
-		<origin xyz="0.0 1.20 0.0" rpy="0 0 0" />
-		<parent link="world" />
-		<child link="wall_1" />
-    </joint> -->
 
   	<link name="wall_1">
     		<inertial>
-      			<origin xyz="0.0 1.215 0.0" /> 
+      			<origin xyz="0.0 1.22 0.0" /> 
       			<mass value="10.0" />
       			<inertia  ixx="1.0" ixy="0.0"  ixz="0.0"  iyy="1.0"  iyz="0.0"  izz="1.0" />
     		</inertial>
     		<visual>
-      			<origin xyz="0.0 1.215 0.0"/>
+      			<origin xyz="0.0 1.22 0.0"/>
       			<geometry>
         			<box size="4.04 0.015 0.3" />
       			</geometry>
     		</visual>
     		<collision>
-      			<origin xyz="0.0 1.02 0.0"/>
+      			<origin xyz="0.0 1.22 0.0"/>
       		<geometry>
         		<box size="4.04 0.015 0.3" />
       		</geometry>
@@ -56,13 +49,13 @@
     		<visual>
       			<origin xyz="0 0 0"/>
       			<geometry>
-        			<box size="0.015 -2.43 0.3" />
+        			<box size="0.015 -2.44 0.3" />
       			</geometry>
     		</visual>
     		<collision>
       			<origin xyz="0 0 0"/>
       			<geometry>
-        			<box size="0.015 -2.43 0.3" />
+        			<box size="0.015 -2.44 0.3" />
       			</geometry>
     		</collision>
   	</link>
@@ -120,7 +113,7 @@
   	</link>
 
 	<joint name="join2" type="fixed">
-    		<origin xyz="-2.02 -1.215 0" rpy="0 0 0"/>
+    		<origin xyz="-2.02 -1.22 0" rpy="0 0 0"/>
     		<parent link="wall_2"/>
     		<child link="wall_3"/>
   	</joint>
@@ -160,13 +153,13 @@
     		<visual>
       			<origin xyz="0 0.0 0"/>
       			<geometry>
-        			<box size="0.5 2.43 0.11" />
+        			<box size="0.5 2.44 0.11" />
       			</geometry>
     		</visual>
     		<collision>
       			<origin xyz="0 0.0 0" /> 
       		<geometry>
-        		<box size="0.5 2.43 0.11" />
+        		<box size="0.5 2.44 0.11" />
       		</geometry>
     		</collision>
   	</link>
