@@ -16,5 +16,7 @@
 
 	<!-- launch move_base node -->
 	<include file="$(find raw_2dnav_experimental)/ros/launch/move_base.launch" />
-
+		
+	<!-- ekf (no effect on real robot, but need for simulation) -->
+	<include file="$(find raw_2dnav_experimental)/ros/launch/ekf.launch" />
 </launch>
