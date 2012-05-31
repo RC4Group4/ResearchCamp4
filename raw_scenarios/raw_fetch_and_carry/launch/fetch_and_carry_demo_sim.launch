@@ -3,8 +3,8 @@
 	<!-- base components -->
 	<include file="$(find raw_bringup)/robots/sim.launch" />
 
-	
-	
+	<!-- navigation -->
+	<include file="$(find raw_2dnav)/ros/launch/2dnav.launch" />	
 
 	<!-- manipulation -->
 	<include file="$(find raw_arm_navigation)/ros/launch/simple_manipulation.launch" />	
