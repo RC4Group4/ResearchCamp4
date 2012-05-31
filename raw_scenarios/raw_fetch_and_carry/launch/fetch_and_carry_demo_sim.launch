@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<launch>
+	<!-- base components -->
+	<include file="$(find raw_bringup)/robots/sim.launch" />
+
+	
+	
+
+	<!-- manipulation -->
+	<include file="$(find raw_arm_navigation)/ros/launch/simple_manipulation.launch" />	
+
+	<!-- script server -->
+	<include file="$(find raw_script_server)/launch/script_server.launch" />
+	
+	<!-- perception --> 
+	<include file="$(find raw_object_finder)/ros/launch/object_segmentation.launch" />
+
+</launch>
