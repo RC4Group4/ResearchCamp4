@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<launch>
+	<group>
+		<machine name="pc1" address="youbot-hbrs1-pc1" default="true"/>
+	
+		<include file="$(find youbot_oodl)/launch/youbot_oodl_driver.launch" />
+		<include file="$(find raw_bringup)/components/youbot_joint_state_publisher.launch" />
+
+		<include file="$(find raw_bringup)/components/base_front_hokuyo_node.launch" />
+
+		<include file="$(find raw_teleop)/ros/launch/teleop_joypad.launch" />
+	</group>
+</launch>
