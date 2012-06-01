@@ -61,6 +61,13 @@ class GripperActionServer:
 	
 	def execute_cb_move_joint_config_direct(self, action_msgs):
 		rospy.loginfo("move gripper to joint configuration")
+		
+		if not self.is_joint_configuration_not_in_limits(action_msgs.goal):
+			result = raw_arm_navigation.msg.MoveToJointConfigurationResult()
+			result.result.val = arm_navigation_msgs.msg.ArmNavigationErrorCodes.JOINT_LIMITS_VIOLATED
+			self.as_move_joint_direct.set_aborted(result)
+			return
+		
 		self.pub_joint_positions.publish(action_msgs.goal)
 		
 		#wait to reach the goal position
@@ -72,7 +79,16 @@ class GripperActionServer:
 		result.result.val = arm_navigation_msgs.msg.ArmNavigationErrorCodes.SUCCESS
 		
 		self.as_move_joint_direct.set_succeeded(result)
-				
+		
+	def is_joint_configuration_not_in_limits(self, goal_configuration):
+		for goal_joint in goal_configuration.positions:
+			for joint_limit in self.joint_limits:
+				rospy.loginfo("%s %s %lf %lf %lf", joint_limit, goal_joint, goal_joint.value, joint_limit.min_position, joint_limit.max_position)
+				if ((goal_joint.joint_uri == joint_limit.joint_name) and ((goal_joint.value < joint_limit.min_position) or (goal_joint.value > joint_limit.max_position))):
+					rospy.logerr("goal configuration has <<%s>> in joint limit: %lf", goal_joint.joint_uri, goal_joint.value)
+					return False
+		
+		return True				
 		
 	def is_goal_reached(self, goal_pose):
 		for i in range(len(self.joint_names)):
