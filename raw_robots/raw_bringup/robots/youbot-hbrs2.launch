@@ -1,8 +1,5 @@
 <?xml version="1.0"?>
-<launch>
-	<rosparam file="$(find youbot_description)/controller/arm_joint_universal_control.yaml" command="load" ns="arm_1"/>
-	<rosparam file="$(find youbot_description)/controller/gripper_joint_position_control.yaml" command="load" ns="arm_1"/>
-
+<launch>	
 	<group>
 		<machine name="pc1" address="youbot-hbrs2-pc1" default="true"/>
 	

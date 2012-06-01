@@ -3,10 +3,7 @@
 
 	<!-- start the hokuyo node -->
 	<node type="hokuyo_node" pkg="hokuyo_node" name="hokuyo_front_node">  
-		<param name="min_ang" type="double" value="-1.57" />
-		<param name="max_ang" type="double" value="1.57" />
-		<param name="port" type="string" value="/dev/youbot/hokuyo_front"/>
-		<param name="frame_id" value="/base_laser_front_link"/>
+		<rosparam command="load" file="$(find raw_hardware_config)/$(env ROBOT)/config/laser_front.yaml"/>
 		<remap from="/scan" to="/scan_front"/>
 	</node>
 </launch>

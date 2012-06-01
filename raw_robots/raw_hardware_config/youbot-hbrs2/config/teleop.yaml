@@ -1,0 +1,4 @@
+base_max_linear_x_vel: 0.5     # m per second in run mode
+base_max_linear_y_vel: 0.5     # m per second in run mode 
+base_max_angular_vel: 1.0     # rad per second in run mode 
+arm_max_vel: 0.8     # rad per second in run mode 
