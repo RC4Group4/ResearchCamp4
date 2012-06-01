@@ -39,10 +39,10 @@
   <joint name="${name}_camera_depth_joint" type="fixed">
     <origin xyz="0 0.018 0" rpy="0 0 0" />
     <parent link="${name}_camera" />
-    <child link="${name}_camera_depth_frame" />
+    <child link="${name}_depth_frame" />
   </joint>
 
-  <link name="${name}_camera_depth_frame">
+  <link name="${name}_depth_frame">
     <inertial>
       <mass value="0.01" />
       <origin xyz="0 0 0" />
@@ -54,11 +54,11 @@
 
   <joint name="${name}_camera_depth_optical_joint" type="fixed">
     <origin xyz="0 0 0" rpy="${-M_PI/2} 0 ${-M_PI/2}" />
-    <parent link="${name}_camera_depth_frame" />
-    <child link="${name}_camera_depth_optical_frame" />
+    <parent link="${name}_depth_frame" />
+    <child link="${name}_depth_optical_frame" />
   </joint>
 
-  <link name="${name}_camera_depth_optical_frame">
+  <link name="${name}_depth_optical_frame">
     <inertial>
       <mass value="0.001" />
       <origin xyz="0 0 0" />
@@ -71,10 +71,10 @@
   <joint name="${name}_camera_rgb_joint" type="fixed">
     <origin xyz="0 -0.005 0" rpy="0 0 0" />
     <parent link="${name}_camera" />
-    <child link="${name}_camera_rgb_frame" />
+    <child link="${name}_rgb_frame" />
   </joint>
 
-  <link name="${name}_camera_rgb_frame">
+  <link name="${name}_rgb_frame">
     <inertial>
       <mass value="0.001" />
       <origin xyz="0 0 0" />
@@ -86,11 +86,11 @@
 
   <joint name="${name}_camera_rgb_optical_joint" type="fixed">
     <origin xyz="0 0 0" rpy="${-M_PI/2} 0 ${-M_PI/2}" />
-    <parent link="${name}_camera_rgb_frame" />
-    <child link="${name}_camera_rgb_optical_frame" />
+    <parent link="${name}_rgb_frame" />
+    <child link="${name}_rgb_optical_frame" />
   </joint>
 
-  <link name="${name}_camera_rgb_optical_frame">
+  <link name="${name}_rgb_optical_frame">
     <inertial>
       <mass value="0.001" />
       <origin xyz="0 0 0" />

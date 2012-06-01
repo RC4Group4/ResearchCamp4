@@ -163,6 +163,7 @@ public:
     sensor_msgs::PointCloud2 cpc_msg;
     // create point_cloud message
     cpc_msg.header = pc->header;
+    cpc_msg.header.frame_id = "/openni_rgb_optical_frame";
     
     cv_bridge::CvImagePtr cv_ptr;
     try
