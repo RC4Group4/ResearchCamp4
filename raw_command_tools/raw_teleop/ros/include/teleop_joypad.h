@@ -2,7 +2,7 @@
  * teleop_joypad.h
  *
  *  Created on: May 27, 2012
- *      Author: fred
+ *      Author: Frederik Hegger
  */
 
 #ifndef TELEOP_JOYPAD_H_
@@ -15,6 +15,7 @@
 #include <brics_actuator/JointVelocities.h>
 #include <std_srvs/Empty.h>
 #include <boost/units/systems/si.hpp>
+#include <arm_navigation_msgs/JointLimits.h>
 #include <boost/units/io.hpp>
 #include <vector>
 #include <string>
@@ -38,6 +39,9 @@
 #define AXES_ARM_2						5
 
 
+
+
+
 class TeleOpJoypad
 {
 public:
@@ -46,26 +50,26 @@ public:
 
 private:
 	void cbJoy(const sensor_msgs::Joy::ConstPtr& command);
-	void cbJoinStates(const sensor_msgs::JointState::ConstPtr& state_msg);
-	void setAllJointVel(double motor_vel);
-	void setSingleJointVel(double motor_vel, std::string joint_name);
-	void check_arm_joint_limits();
+	void cbJointStates(const sensor_msgs::JointState::ConstPtr& state_msg);
+	void setAllArmJointVel(double motor_vel);
+	void setSingleArmJointVel(double motor_vel, std::string joint_name);
+	void checkArmJointLimits();
 	void turnOnArmMotorsOn();
 	void turnOnArmMotorsOff();
 
 	sensor_msgs::JointState current_joint_states_;
 	bool is_in_soft_joint_limits_;
 	double soft_joint_limit_threshold_;
+	double arm_max_vel_;
+	std::vector<std::string> arm_joint_names_;
+	std::vector<arm_navigation_msgs::JointLimits> arm_joint_limits_;
+	brics_actuator::JointVelocities arm_vel_;
+
 	double speed_factor_;
 
 	bool button_deadman_pressed_;
 	bool button_deadman_pressed_prev_;
 	bool button_run_pressed_;
-
-	std::vector<std::string> arm_joint_names_;
-	std::vector<std::string> arm_joint_limits_;
-	brics_actuator::JointVelocities arm_vel_;
-	double arm_max_vel_;
 
 	geometry_msgs::Twist base_vel_;
 	geometry_msgs::Twist base_zero_vel_;
