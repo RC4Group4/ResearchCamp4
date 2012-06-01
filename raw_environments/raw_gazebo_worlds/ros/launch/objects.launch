@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<launch>
+
+	<!-- send world urdf to param server -->
+	<param name="object_descriptions" command="$(find xacro)/xacro.py $(find raw_gazebo_worlds)/common/objects/$(env ROBOT_ENV).urdf.xacro" />
+	<node name="objects_gazebo_model" pkg="gazebo" type="spawn_model" args="-urdf -param object_descriptions -model objects -x 0.0 -y 0.0 -z 0.2" respawn="false" output="screen" />
+    
+
+</launch>
