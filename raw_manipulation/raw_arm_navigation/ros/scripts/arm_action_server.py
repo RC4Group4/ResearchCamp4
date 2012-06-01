@@ -115,7 +115,7 @@ class ArmActionServer:
 				jp.positions.append(jv)
 				
 		
-			if not self.is_joint_configuration_not_in_limits(action_msgs.goal):
+			if not self.is_joint_configuration_not_in_limits(jp):
 				result = raw_arm_navigation.msg.MoveToJointConfigurationResult()
 				result.result.val = arm_navigation_msgs.msg.ArmNavigationErrorCodes.JOINT_LIMITS_VIOLATED
 				self.as_move_cart_direct.set_aborted(result)

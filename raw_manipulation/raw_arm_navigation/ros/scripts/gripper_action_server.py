@@ -83,7 +83,6 @@ class GripperActionServer:
 	def is_joint_configuration_not_in_limits(self, goal_configuration):
 		for goal_joint in goal_configuration.positions:
 			for joint_limit in self.joint_limits:
-				rospy.loginfo("%s %s %lf %lf %lf", joint_limit, goal_joint, goal_joint.value, joint_limit.min_position, joint_limit.max_position)
 				if ((goal_joint.joint_uri == joint_limit.joint_name) and ((goal_joint.value < joint_limit.min_position) or (goal_joint.value > joint_limit.max_position))):
 					rospy.logerr("goal configuration has <<%s>> in joint limit: %lf", goal_joint.joint_uri, goal_joint.value)
 					return False
