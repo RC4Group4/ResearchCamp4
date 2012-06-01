@@ -17,6 +17,8 @@
   <depend package="youbot_navigation_common"/>
   <depend package="move_base"/>
   <depend package="raw_tools"/>
+  <depend package="raw_local_planner_omnidirectional"/>
+
 
 
 </package>
