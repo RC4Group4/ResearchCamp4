@@ -22,6 +22,21 @@ class ArmActionServer:
 		else:
 			self.joint_names = sorted(rospy.get_param("joints"))
 			rospy.loginfo("arm joints: %s", self.joint_names)
+			
+		# read joint limits
+		self.joint_limits = []
+		for joint in self.joint_names:
+			if ((not rospy.has_param("limits/" + joint + "/min")) or (not rospy.has_param("limits/" + joint + "/min"))):
+				rospy.logerr("No arm joint limits given.")
+				exit(0)
+			else:
+				limit = arm_navigation_msgs.msg.JointLimits()
+				limit.joint_name = joint 
+				limit.min_position = rospy.get_param("limits/" + joint + "/min")
+				limit.max_position = rospy.get_param("limits/" + joint + "/max")
+				self.joint_limits.append(limit)
+				
+		rospy.loginfo("gripper limits: %s", self.joint_limits)
 		
 		self.current_joint_configuration = [0 for i in range(len(self.joint_names))]
 		

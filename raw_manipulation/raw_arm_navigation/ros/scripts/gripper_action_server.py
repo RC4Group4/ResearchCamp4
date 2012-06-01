@@ -13,7 +13,8 @@ import tf
 class GripperActionServer:
 	def __init__(self):
 		self.received_state = False
-					
+		
+		#read joint names
 		if (not rospy.has_param("joints")):
 			rospy.logerr("No gripper joints given.")
 			exit(0)
@@ -21,9 +22,22 @@ class GripperActionServer:
 			self.joint_names = sorted(rospy.get_param("joints"))
 			rospy.loginfo("gripper joints: %s", self.joint_names)
 		
-		self.current_joint_configuration = [0 for i in range(len(self.joint_names))]
+		# read joint limits
+		self.joint_limits = []
+		for joint in self.joint_names:
+			if ((not rospy.has_param("limits/" + joint + "/min")) or (not rospy.has_param("limits/" + joint + "/min"))):
+				rospy.logerr("No gripper limits given.")
+				exit(0)
+			else:
+				limit = arm_navigation_msgs.msg.JointLimits()
+				limit.joint_name = joint 
+				limit.min_position = rospy.get_param("limits/" + joint + "/min")
+				limit.max_position = rospy.get_param("limits/" + joint + "/max")
+				self.joint_limits.append(limit)	
 		
+		self.current_joint_configuration = [0 for i in range(len(self.joint_names))]
 		self.unit = "m"
+		
 		
 		# subscriptions
 		rospy.Subscriber("joint_states", sensor_msgs.msg.JointState, self.joint_states_callback)
