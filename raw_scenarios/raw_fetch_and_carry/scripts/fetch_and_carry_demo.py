@@ -47,7 +47,7 @@ def main():
                       
         smach.StateMachine.add('SM_GRASP_OBJECT', sm_grasp_random_object(),
             transitions={'object_grasped':'PLACE_OBJECT_ON_REAR_PLATFORM', 
-                         'failed':'overall_failed'})
+                         'failed':'SM_GRASP_OBJECT'})
                                 
         smach.StateMachine.add('PLACE_OBJECT_ON_REAR_PLATFORM', place_obj_on_rear_platform(),
             transitions={'succeeded':'SELECT_POSE_TO_APPROACH', 
