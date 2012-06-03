@@ -1,13 +1,23 @@
-rect1:
-  object_type: rectangle
+alu_profil_f20_black_1:
+  object_type: alu_profil_f20_black
   model_type: urdf.xacro
-  position: [-0.2, 0, 0]
+  position: [1.7, -0.8, 0.2]
   orientation: [0, 0, 0]
-  color: Gazebo/Yellow
-
-rect2:
-  object_type: rectangle
+  
+alu_profil_f20_gray_1:
+  object_type: alu_profil_f20_gray
   model_type: urdf.xacro
-  position: [0.2, 0, 0]
-  orientation: [0, 0, 0]
-  color: Gazebo/Black
+  position: [-1.7, 0.8, 0.2]
+  orientation: [0, 0, -0.4]
+  
+alu_profil_s40_black_1:
+  object_type: alu_profil_s40_black
+  model_type: urdf.xacro
+  position: [1.7, 0.8, 0.2]
+  orientation: [0, 0, 1.57]
+  
+alu_profil_s40_gray_1:
+  object_type: alu_profil_s40_gray
+  model_type: urdf.xacro
+  position: [-1.7, -0.8, 0.2]
+  orientation: [0, 0, 0.4]
