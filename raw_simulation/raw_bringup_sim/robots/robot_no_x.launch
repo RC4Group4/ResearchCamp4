@@ -2,7 +2,9 @@
 <launch>
 	<param name="/use_sim_time" value="true" />
 	
+	<!-- upload robot and env params -->
 	<include file="$(find raw_default_robot_config)/upload_param.launch" />
+	<include file="$(find raw_default_env_config)/upload_param.launch" />
 
     <!-- start gazebo without GUI and load environment -->
 	<include file="$(find raw_gazebo_worlds)/ros/launch/$(env ROBOT_ENV).launch">

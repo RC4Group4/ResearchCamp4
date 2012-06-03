@@ -1,0 +1,13 @@
+rect1:
+  object_type: rectangle
+  model_type: urdf.xacro
+  position: [-0.2, 0, 0]
+  orientation: [0, 0, 0]
+  color: Gazebo/Yellow
+
+rect2:
+  object_type: rectangle
+  model_type: urdf.xacro
+  position: [0.2, 0, 0]
+  orientation: [0, 0, 0]
+  color: Gazebo/Black
