@@ -15,11 +15,8 @@ if __name__ == "__main__":
     
     object_names = rospy.get_param(param_obj_preffix)
     
-    print object_names  
-    
     for obj_name in object_names:
 
-        color = rospy.get_param(param_obj_preffix + "/" + obj_name + "/color")
         model_type = rospy.get_param(param_obj_preffix + "/" + obj_name + "/model_type")
         object_type = rospy.get_param(param_obj_preffix + "/" + obj_name + "/object_type")
         orientation = rospy.get_param(param_obj_preffix + "/" + obj_name + "/orientation")
@@ -38,7 +35,6 @@ if __name__ == "__main__":
         object_pose.orientation.w = quaternion[3]
 
         file_localition = roslib.packages.get_pkg_dir('raw_gazebo_objects') + '/common/objects/' + object_type + '.' + model_type
-
 
         # call gazebo service to spawn model (see http://ros.org/wiki/gazebo)
         if model_type == "urdf":
