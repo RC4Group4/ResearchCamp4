@@ -11,8 +11,32 @@ from geometry_msgs.msg import *
 import tf.transformations as tft
 
 if __name__ == "__main__":
-    param_obj_preffix = "/simulation/objects"
+    ### wait for gazebo world beeing loaded
+    rospy.loginfo("Wait for service <</gazebo/get_world_properties>>")
+    rospy.wait_for_service('/gazebo/get_world_properties', 300)
     
+    world_loaded = False
+    while not world_loaded:    
+        srv_world_infos = rospy.ServiceProxy('/gazebo/get_world_properties', GetWorldProperties)
+    
+        try:
+            req = GetWorldPropertiesRequest()
+            res = srv_world_infos(req)
+    
+            for item in res.model_names:
+                if item == 'arena':
+                    world_loaded = True
+                    break
+        except rospy.ServiceException, e:
+            print "Service call <</gazebo/get_world_properties>> failed: %s"%e
+        
+        rospy.sleep(1)
+        
+    rospy.loginfo("Arena loaded successfully. Start loading objects ...")
+
+    
+    # get object information
+    param_obj_preffix = "/simulation/objects"
     object_names = rospy.get_param(param_obj_preffix)
     
     for obj_name in object_names:
