@@ -11,6 +11,6 @@
 
 	<!-- send world urdf to param server -->
     <param name="arena_description" command="$(find xacro)/xacro.py $(find raw_gazebo_worlds)/common/worlds/$(env ROBOT_ENV).urdf" />
-    
     <node name="arena_gazebo_model" pkg="gazebo" type="spawn_model" args="-urdf -param arena_description -model arena -x 0.0 -y 0.0 -z 0.2" respawn="false" output="screen" />
+    
 </launch>
