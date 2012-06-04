@@ -1,23 +1,11 @@
-alu_profil_f20_black_1:
-  object_type: alu_profil_f20_black
+aluprofil_s40_100_gray_1:
+  object_type: aluprofil_s40_100_gray
   model_type: urdf.xacro
   position: [1.7, -0.9, 0.2]
   orientation: [0, 0, 0]
-  
-alu_profil_f20_gray_1:
-  object_type: alu_profil_f20_gray
-  model_type: urdf.xacro
-  position: [-1.7, 0.8, 0.2]
-  orientation: [0, 0, -0.4]
-  
-alu_profil_s40_black_1:
-  object_type: alu_profil_s40_black
-  model_type: urdf.xacro
-  position: [1.7, 0.9, 0.2]
-  orientation: [0, 0, 1.57]
-  
-alu_profil_s40_gray_1:
-  object_type: alu_profil_s40_gray
+    
+aluprofil_f20_100_gray_1:
+  object_type: aluprofil_f20_100_gray
   model_type: urdf.xacro
   position: [-1.7, -0.8, 0.2]
   orientation: [0, 0, 0.4]
@@ -40,10 +28,16 @@ nut_30_2:
   position: [-1.8, -0.6, 0.2]
   orientation: [0, 0, 0]
   
-pipe_20_1:
-  object_type: pipe_20
+adapter_sleeve_v20_1:
+  object_type: adapter_sleeve_v20
   model_type: urdf.xacro
   position: [1.7, -0.1, 0.2]
+  orientation: [0, 0, 0]
+  
+adapter_sleeve_r20_1:
+  object_type: adapter_sleeve_r20
+  model_type: urdf.xacro
+  position: [1.7, 0.0, 0.2]
   orientation: [0, 0, 0]
 
 screw_m20_100_1:
