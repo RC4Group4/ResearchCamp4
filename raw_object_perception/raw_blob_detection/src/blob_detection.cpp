@@ -45,7 +45,7 @@ public:
     IplImage* gray = cvCreateImage( cvGetSize( cv_image ), 8, 1);
     cvCvtColor( cv_image, gray, CV_BGR2GRAY );
 
-    display_image = cvCreateImage( cvGetSize( cv_image ), 8, 1 ); 
+    display_image = cvCreateImage( cvGetSize( cv_image ), cv_img->depth, cv_img->nChannels ); 
 
     cvThreshold( gray, gray, 0, 255, CV_THRESH_BINARY_INV | CV_THRESH_OTSU );
 
@@ -65,22 +65,16 @@ public:
 
     for ( int i = 0; i < blobs.GetNumBlobs(); i++ )
     {
-            //currentBlob = blobs.GetBlob(i);
-            //currentBlob->FillBlob( display_image, CV_RGB( 255, 0, 0 ) );
+      currentBlob = blobs.GetBlob(i);
+      currentBlob->FillBlob( display_image, CV_RGB( 0, 0, 255 ) );
     }
-
-    // ----- DEBUGGING -----
-    //cvShowImage( "Image window", cv_image );
-    // ---------------------
 
     // Setting up fonts for overlay information.
     CvFont font;
     cvInitFont(&font, CV_FONT_HERSHEY_SIMPLEX, 1.0, 1.0, 0, 1, CV_AA);
-    
 
     //cvPutText( gray, "Hello World!", cvPoint( 10, gray->height - 10 ), &font, cvScalar( 255, 1, 1 ) );
     cvRectangle( gray, cvPoint( 0, gray->height-50 ), cvPoint( gray->width, gray->height ), CV_RGB( 0, 255, 0 ), -1 );
-
 
     cvPutText( gray, "X: ", cvPoint( 10, gray->height - 10 ), &font, CV_RGB( 0, 255, 255 ) );
     cvPutText( gray, "Y: ", cvPoint( 110, gray->height - 10 ), &font, CV_RGB( 0, 255, 255 ) );
