@@ -19,12 +19,14 @@ def arm_action_test():
 
    
     print 'establish action msg'
-    action_goal.goal.pose.position.x = 0.0
+    action_goal.goal.pose.position.x = 0.3
     action_goal.goal.pose.position.y = 0.0
-    action_goal.goal.pose.position.z = 0.4  
+    action_goal.goal.pose.position.z = 0.2  
+    action_goal.goal.header.stamp = rospy.Time.now()
+    action_goal.goal.header.frame_id = "/arm_link_0"
     
     roll = 0.0
-    pitch = 0.0
+    pitch = ((math.pi/2) + (math.pi/4))
     yaw = 0.0
     
     (qx,qy,qz,qw) = tf.transformations.quaternion_from_euler(roll, pitch, yaw)
