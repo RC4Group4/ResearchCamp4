@@ -24,6 +24,5 @@ class select_pose_to_approach(smach.State):
                 count = count + 1 
         
         rospy.loginfo("selected pose: %s", userdata.base_pose_to_approach)
-        rospy.sleep(1)
                 
         return 'succeeded'
