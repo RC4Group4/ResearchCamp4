@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<robot name="screw_m20_100" xmlns:xacro="http://ros.org/wiki/xacro">	
-
-	<include filename="$(find raw_gazebo_objects)/common//templates/screw.urdf.xacro" />
-
-	<xacro:screw_template name="screw_m20_100" radius="0.03" length="0.1" color="Gazebo/Black" />
-		 
-</robot>	
