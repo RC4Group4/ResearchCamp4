@@ -3,6 +3,6 @@
 
 	<include filename="$(find raw_gazebo_objects)/common/templates/model.urdf.xacro" />
 
-	<xacro:model_template name="aluprofil_f20_100_gray" model_filename="aluprofil_f20_100_gray.dae" scale="0.001"  height="0.1"/>
+	<xacro:model_template name="aluprofil_f20_100_gray" model_filename="aluprofil_f20_100_gray.dae" scale="0.001"  height="0.1"  weight="0.05"/>
  
 </robot>

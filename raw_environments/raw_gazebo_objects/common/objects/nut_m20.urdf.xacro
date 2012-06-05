@@ -3,6 +3,6 @@
 
 	<include filename="$(find raw_gazebo_objects)/common/templates/model.urdf.xacro" />
 
-	<xacro:model_template name="nut_m20" model_filename="nut_m20.dae" scale="0.001"  height="0.01"/>
+	<xacro:model_template name="nut_m20" model_filename="nut_m20.dae" scale="0.001"  height="0.01"  weight="0.068"/>
 	
 </robot>
