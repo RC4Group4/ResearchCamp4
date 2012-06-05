@@ -15,4 +15,7 @@
 	<!-- perception --> 
 	<include file="$(find raw_object_finder)/ros/launch/object_segmentation.launch" />
 
+    <!-- load objects into gazebo -->
+	<include file="$(find raw_gazebo_objects)/ros/launch/simulation_objects.launch" />
+
 </launch>

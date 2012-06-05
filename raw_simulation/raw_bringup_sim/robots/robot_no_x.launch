@@ -13,8 +13,5 @@
 
     <!-- load robot into gazebo -->
     <include file="$(find raw_bringup_sim)/robots/$(env ROBOT).launch" />
-    
-    <!-- load objects into gazebo -->
-	<include file="$(find raw_gazebo_objects)/ros/launch/simulation_objects.launch" />
-	
+    	
 </launch>
