@@ -1,0 +1,22 @@
+<package>
+  <description brief="raw_scene_segmentation">
+
+     raw_scene_segmentation
+
+  </description>
+  <author>Sergey Alexandrov</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/raw_scene_segmentation</url>
+  <depend package="roscpp"/>
+  <depend package="sensor_msgs"/>
+  <depend package="pcl_ros"/>
+  <depend package="raw_srvs"/>
+  
+  <export>
+    <cpp cflags="-I${prefix}/ros/include" lflags="-Wl,-rpath,${prefix}/lib -L${prefix}/lib -lscene_segmentation"/>
+  </export>
+  
+</package>
+
+

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<launch>
+  
+  <!-- Dominant plane extractor node -->
+  <node pkg="raw_scene_segmentation" type="dominant_plane_extractor_node" name="dominant_plane_extractor_node" ns="raw_perception" output="screen">
+    <param name="input_cloud_topic" type="string" value="/depth_registered/points" />
+    <param name="min_x" type="double" value="-1.2" />
+    <param name="max_x" type="double" value="1.5" />
+    <param name="min_y" type="double" value="-1.5" />
+    <param name="max_y" type="double" value="1.5" />
+    <param name="min_z" type="double" value="0.35" />
+    <param name="max_z" type="double" value="1.5" />
+  </node>
+
+</launch>
