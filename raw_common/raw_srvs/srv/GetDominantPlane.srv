@@ -1,0 +1,7 @@
+---
+# Time stamp when the dominant plane has been extracted
+time stamp
+# Plane coefficients
+float32[4] coefficients
+# List of points in plane contour
+geometry_msgs/Point32[] contour
