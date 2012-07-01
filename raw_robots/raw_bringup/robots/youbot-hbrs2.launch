@@ -9,15 +9,8 @@
 		<include file="$(find raw_bringup)/components/arm.launch" />		
 
 		<include file="$(find raw_bringup)/components/base_front_hokuyo_node.launch" />
-		<include file="$(find raw_bringup)/components/base_rear_hokuyo_node.launch" />
 
 		<include file="$(find raw_teleop)/ros/launch/teleop_joypad.launch" />
 	</group>
 
-	<group>
-		<machine name="pc2" address="youbot-hbrs2-pc2" default="true"/>
-	
-		<!-- asus or kinect camera -->
-		<include file="$(find raw_bringup)/components/cam3d.launch" />
-	</group>
 </launch>

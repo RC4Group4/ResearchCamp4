@@ -19,6 +19,7 @@
 		<machine name="pc2" address="youbot-hbrs2-pc2" default="true"/>
 	
 		<!-- perception --> 
+    	<include file="$(find raw_bringup)/components/cam3d.launch" />
 		<include file="$(find raw_object_finder)/ros/launch/object_segmentation.launch" />
 	</group>
 </launch>
